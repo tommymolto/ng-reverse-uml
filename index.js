@@ -49,23 +49,28 @@ function print(node) {
         var l = JSON.parse(JSON.stringify(node));
         // console.log('conteudo', l);
         var xx = node;
-        console.log('method', xx.body);
+        // console.log('method', xx.body);
         var p = l.name.escapedText;
         if (componentMethods.includes(p)) {
             methods.push(component + '->' + component + ' : ' + p);
-            verificaChamadas(node, component);
+            verificaChamadas(node, xx);
             methods.push(component + '<-' + component + ' : ' + p);
         }
+    }
+    if (ts.SyntaxKind[node.kind] === 'ThisDeclaration' || ts.SyntaxKind[node.kind] === 'PropertyAccessExpression') {
+        // console.log('Olha o this', node)
     }
     indent++;
     ts.forEachChild(node, print);
     indent--;
 }
 function verificaChamadas(no, metodo) {
+    var xxx = metodo.name;
+    console.log('filhos de ', xxx.escapedText);
     ts.forEachChild(no, function (x) {
         if (ts.SyntaxKind[x.kind] === 'PropertyAccessExpression') {
             var hh = x;
-            console.log('chamu ' + metodo, JSON.parse(JSON.stringify(no)));
+            // console.log('chamu ' + metodo, JSON.parse(JSON.stringify(no)));
         }
         verificaChamadas(x, metodo);
     });

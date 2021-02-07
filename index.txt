@@ -1,0 +1,215 @@
+ImportDeclaration->
+ ImportClause->
+  NamedImports->
+   ImportSpecifier->
+    Identifier->
+   ImportSpecifier->
+    Identifier->
+ StringLiteral->
+ImportDeclaration->
+ ImportClause->
+  NamedImports->
+   ImportSpecifier->
+    Identifier->
+ StringLiteral->
+ImportDeclaration->
+ ImportClause->
+  NamedImports->
+   ImportSpecifier->
+    Identifier->
+ StringLiteral->
+ClassDeclaration->
+ Decorator->
+  CallExpression->
+   Identifier->
+   ObjectLiteralExpression->
+    PropertyAssignment->
+     Identifier->
+     StringLiteral->
+    PropertyAssignment->
+     Identifier->
+     StringLiteral->
+    PropertyAssignment->
+     Identifier->
+     ArrayLiteralExpression->
+      StringLiteral->
+ ExportKeyword->
+ Identifier->
+ HeritageClause->
+  ExpressionWithTypeArguments->
+   Identifier->
+ Constructor->
+  Parameter->
+   PrivateKeyword->
+   Identifier->
+   TypeReference->
+    Identifier->
+  Parameter->
+   PrivateKeyword->
+   Identifier->
+   TypeReference->
+    Identifier->
+  Block->
+ PropertyDeclaration->
+  Identifier->
+  ArrayType->
+   AnyKeyword->
+ PropertyDeclaration->
+  Identifier->
+  TrueKeyword->
+ PropertyDeclaration->
+  Identifier->
+  FalseKeyword->
+ MethodDeclaration->
+filhos de  ngOnInit
+filhos de  ngOnInit
+filhos de  ngOnInit
+filhos de  ngOnInit
+filhos de  ngOnInit
+filhos de  ngOnInit
+filhos de  ngOnInit
+filhos de  ngOnInit
+  Identifier->
+  Block->
+   ExpressionStatement->
+    CallExpression->
+     PropertyAccessExpression->
+      ThisKeyword->
+      Identifier->
+ MethodDeclaration->
+  AsyncKeyword->
+  Identifier->
+  Block->
+   ExpressionStatement->
+    BinaryExpression->
+     PropertyAccessExpression->
+      ThisKeyword->
+      Identifier->
+     FirstAssignment->
+     TrueKeyword->
+   FirstStatement->
+    VariableDeclarationList->
+     VariableDeclaration->
+      Identifier->
+      PropertyAccessExpression->
+       PropertyAccessExpression->
+        ThisKeyword->
+        Identifier->
+       Identifier->
+   TryStatement->
+    Block->
+     ExpressionStatement->
+      BinaryExpression->
+       PropertyAccessExpression->
+        ThisKeyword->
+        Identifier->
+       FirstAssignment->
+       AwaitExpression->
+        CallExpression->
+         PropertyAccessExpression->
+          PropertyAccessExpression->
+           ThisKeyword->
+           Identifier->
+          Identifier->
+         Identifier->
+    CatchClause->
+     VariableDeclaration->
+      Identifier->
+     Block->
+      ExpressionStatement->
+       BinaryExpression->
+        PropertyAccessExpression->
+         ThisKeyword->
+         Identifier->
+        FirstAssignment->
+        TrueKeyword->
+   ExpressionStatement->
+    BinaryExpression->
+     PropertyAccessExpression->
+      ThisKeyword->
+      Identifier->
+     FirstAssignment->
+     FalseKeyword->
+ MethodDeclaration->
+  AsyncKeyword->
+  Identifier->
+  Parameter->
+   Identifier->
+   NumberKeyword->
+  Block->
+   FirstStatement->
+    VariableDeclarationList->
+     VariableDeclaration->
+      Identifier->
+      PropertyAccessExpression->
+       PropertyAccessExpression->
+        ThisKeyword->
+        Identifier->
+       Identifier->
+   FirstStatement->
+    VariableDeclarationList->
+     VariableDeclaration->
+      Identifier->
+      AwaitExpression->
+       CallExpression->
+        PropertyAccessExpression->
+         PropertyAccessExpression->
+          ThisKeyword->
+          Identifier->
+         Identifier->
+        Identifier->
+        Identifier->
+   FirstStatement->
+    VariableDeclarationList->
+     VariableDeclaration->
+      Identifier->
+      TemplateExpression->
+       TemplateHead->
+       TemplateSpan->
+        ElementAccessExpression->
+         Identifier->
+         StringLiteral->
+        LastTemplateToken->
+   FirstStatement->
+    VariableDeclarationList->
+     VariableDeclaration->
+      Identifier->
+      CallExpression->
+       PropertyAccessExpression->
+        Identifier->
+        Identifier->
+       StringLiteral->
+   FirstStatement->
+    VariableDeclarationList->
+     VariableDeclaration->
+      Identifier->
+      StringLiteral->
+   ExpressionStatement->
+    BinaryExpression->
+     PropertyAccessExpression->
+      Identifier->
+      Identifier->
+     FirstAssignment->
+     Identifier->
+   ExpressionStatement->
+    BinaryExpression->
+     PropertyAccessExpression->
+      Identifier->
+      Identifier->
+     FirstAssignment->
+     Identifier->
+   ExpressionStatement->
+    CallExpression->
+     PropertyAccessExpression->
+      Identifier->
+      Identifier->
+EndOfFileToken->
+headers [
+  'actor ExtratoAnualComponent as ExtratoAnualComponent',
+  'boundary IExtratoAnualTarifaService as extratoAnualService',
+  'boundary IClienteService as clienteService'
+]
+methods [
+  'ExtratoAnualComponent->ExtratoAnualComponent : ngOnInit',
+  'ExtratoAnualComponent<-ExtratoAnualComponent : ngOnInit'
+]

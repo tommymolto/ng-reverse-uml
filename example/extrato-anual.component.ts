@@ -8,14 +8,15 @@ import { IClienteService } from "csf-canais-digitais-lib-cliente";
   styleUrls: ["./extrato-anual.component.scss"],
 })
 export class ExtratoAnualComponent implements OnInit {
+  extratoTarifas: any[] = [];
+  elementLoading = true;
+  errorTarifa = false;
   constructor(
     private extratoAnualService: IExtratoAnualTarifaService,
     private clienteService: IClienteService
   ) {}
 
-  extratoTarifas: any[];
-  elementLoading = true;
-  errorTarifa = false;
+ 
 
   ngOnInit() {
     this.obterExtratoTarifas();

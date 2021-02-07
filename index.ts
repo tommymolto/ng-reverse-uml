@@ -53,25 +53,30 @@ function print(node: ts.Node) {
 
     // console.log('conteudo', l);
     const xx: ts.MethodDeclaration = node as ts.MethodDeclaration;
-    console.log('method', xx.body);
+    // console.log('method', xx.body);
     const p = l.name.escapedText;
     if (componentMethods.includes(p)) {
       methods.push(component + '->' + component + ' : ' + p);
-      verificaChamadas(node, component);
+      verificaChamadas(node, xx);
       methods.push(component + '<-' + component + ' : ' + p);
     }
 
+  }
+  if (ts.SyntaxKind[node.kind] === 'ThisDeclaration' || ts.SyntaxKind[node.kind] === 'PropertyAccessExpression') {
+      // console.log('Olha o this', node)
   }
   indent++;
   ts.forEachChild(node, print);
   indent--;
 }
-function verificaChamadas(no: ts.Node, metodo: string) {
+function verificaChamadas(no: ts.Node, metodo: ts.MethodDeclaration) {
+    var xxx = metodo.name as ts.Identifier;
+    console.log('filhos de ', xxx.escapedText   );
   ts.forEachChild(no, x => {
     if (ts.SyntaxKind[x.kind] === 'PropertyAccessExpression') {
       const hh : PropertyDescriptor = x as PropertyDescriptor;
 
-      console.log('chamu ' + metodo, JSON.parse(JSON.stringify(no)));
+      // console.log('chamu ' + metodo, JSON.parse(JSON.stringify(no)));
     }
     verificaChamadas(x, metodo);
   });
