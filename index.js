@@ -3,6 +3,7 @@ exports.__esModule = true;
 var path_1 = require("path");
 var ngast_1 = require("ngast");
 var ts = require("typescript");
+var fs = require('fs');
 var config = path_1.join(process.cwd(), 'tsconfig.json');
 var workspace = new ngast_1.WorkspaceSymbols(config);
 var modules = workspace.getAllModules();
@@ -12,7 +13,9 @@ var injectables = workspace.getAllInjectable();
 var pipes = workspace.getAllPipes();
 // console.log(components.rootNames);
 // console.log(components.rootNames);
-var file = 'C:\\Users\\tommy\\Downloads\\csf-canais-digitais-web-extrato-anual-de-tarifas\\csf-canais-digitais-web-extrato-anual-de-tarifas\\projects\\extrato-anual-tarifa\\src\\lib\\components\\extrato-anual\\extrato-anual.component.ts';
+// console.log(process.cwd() + '\\example\\extrato-anual.component.ts');
+var file = process.cwd() + '\\example\\extrato-anual.component.ts';
+// 'C:\\Users\\tommy\\Downloads\\csf-canais-digitais-web-extrato-anual-de-tarifas\\csf-canais-digitais-web-extrato-anual-de-tarifas\\projects\\extrato-anual-tarifa\\src\\lib\\components\\extrato-anual\\extrato-anual.component.ts';
 var program = ts.createProgram([file], { allowJs: true });
 var sc = program.getSourceFile(file);
 var indent = 0;
@@ -25,7 +28,7 @@ var componentMethods = ['ngOnInit'];
 var uml = '@staruml' +
     'participant participant as Usuario';
 function print(node) {
-    console.log(new Array(indent + 1).join(' ') + ts.SyntaxKind[node.kind] + '->');
+    // console.log(new Array(indent + 1).join(' ') + ts.SyntaxKind[node.kind] + '->');
     if (ts.SyntaxKind[node.kind] === 'Constructor') {
         ts.forEachChild(node, function (x) {
             if (ts.SyntaxKind[x.kind] === 'Parameter') {
@@ -47,10 +50,11 @@ function print(node) {
     }
     if (ts.SyntaxKind[node.kind] === 'MethodDeclaration') {
         var l = JSON.parse(JSON.stringify(node));
-        // console.log('conteudo', l);
+        //console.log('conteudo', l);
         var xx = node;
         // console.log('method', xx.body);
         var p = l.name.escapedText;
+        console.log('l.name.escapedText=', l.name.escapedText);
         if (componentMethods.includes(p)) {
             methods.push(component + '->' + component + ' : ' + p);
             verificaChamadas(node, xx);
@@ -66,11 +70,11 @@ function print(node) {
 }
 function verificaChamadas(no, metodo) {
     var xxx = metodo.name;
-    console.log('filhos de ', xxx.escapedText);
+    // console.log('filhos de ', xxx.escapedText   );
     ts.forEachChild(no, function (x) {
         if (ts.SyntaxKind[x.kind] === 'PropertyAccessExpression') {
             var hh = x;
-            // console.log('chamu ' + metodo, JSON.parse(JSON.stringify(no)));
+            console.log('chamu ' + metodo, JSON.parse(JSON.stringify(no)));
         }
         verificaChamadas(x, metodo);
     });

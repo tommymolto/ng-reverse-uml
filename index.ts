@@ -1,6 +1,7 @@
 import { join } from 'path';
 import { WorkspaceSymbols } from 'ngast';
 import * as ts from 'typescript';
+const fs = require('fs');
 const config = join(process.cwd(), 'tsconfig.json');
 const workspace = new WorkspaceSymbols(config);
 const modules = workspace.getAllModules();
@@ -10,7 +11,9 @@ const injectables = workspace.getAllInjectable();
 const pipes = workspace.getAllPipes();
 // console.log(components.rootNames);
 // console.log(components.rootNames);
-const file = 'C:\\Users\\tommy\\Downloads\\csf-canais-digitais-web-extrato-anual-de-tarifas\\csf-canais-digitais-web-extrato-anual-de-tarifas\\projects\\extrato-anual-tarifa\\src\\lib\\components\\extrato-anual\\extrato-anual.component.ts';
+// console.log(process.cwd() + '\\example\\extrato-anual.component.ts');
+const file = process.cwd() + '\\example\\extrato-anual.component.ts';
+// 'C:\\Users\\tommy\\Downloads\\csf-canais-digitais-web-extrato-anual-de-tarifas\\csf-canais-digitais-web-extrato-anual-de-tarifas\\projects\\extrato-anual-tarifa\\src\\lib\\components\\extrato-anual\\extrato-anual.component.ts';
 const program = ts.createProgram([file], { allowJs: true });
 const sc = program.getSourceFile(file);
 let indent = 0;
@@ -27,7 +30,7 @@ let uml = '@staruml' +
 function print(node: ts.Node) {
 
 
-  console.log(new Array(indent + 1).join(' ') + ts.SyntaxKind[node.kind] + '->');
+  // console.log(new Array(indent + 1).join(' ') + ts.SyntaxKind[node.kind] + '->');
   if(ts.SyntaxKind[node.kind] === 'Constructor') {
     ts.forEachChild(node, x => {
       if (ts.SyntaxKind[x.kind] === 'Parameter') {
@@ -51,10 +54,11 @@ function print(node: ts.Node) {
   if (ts.SyntaxKind[node.kind] === 'MethodDeclaration') {
     const l = JSON.parse(JSON.stringify(node));
 
-    // console.log('conteudo', l);
+    //console.log('conteudo', l);
     const xx: ts.MethodDeclaration = node as ts.MethodDeclaration;
     // console.log('method', xx.body);
     const p = l.name.escapedText;
+    console.log('l.name.escapedText=',l.name.escapedText);
     if (componentMethods.includes(p)) {
       methods.push(component + '->' + component + ' : ' + p);
       verificaChamadas(node, xx);
@@ -71,12 +75,12 @@ function print(node: ts.Node) {
 }
 function verificaChamadas(no: ts.Node, metodo: ts.MethodDeclaration) {
     var xxx = metodo.name as ts.Identifier;
-    console.log('filhos de ', xxx.escapedText   );
+    // console.log('filhos de ', xxx.escapedText   );
   ts.forEachChild(no, x => {
     if (ts.SyntaxKind[x.kind] === 'PropertyAccessExpression') {
       const hh : PropertyDescriptor = x as PropertyDescriptor;
 
-      // console.log('chamu ' + metodo, JSON.parse(JSON.stringify(no)));
+      console.log('chamu ' + metodo, JSON.parse(JSON.stringify(no)));
     }
     verificaChamadas(x, metodo);
   });
