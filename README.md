@@ -1,4 +1,4 @@
-NG Reverse UML
+# NG Reverse UML
 
 The main purpose of this project is to be an add-on, plugin, whatever to compodoc and similar projects to document dynamically JS projects.
 
@@ -8,14 +8,14 @@ It will give a helpfull tool for architects that needs to validate the tests mad
 
 The project is in its concept based on the logic of ngrev, NGast, AST Viewer and another tools.
 
-Goals:
+## Goals:
 
-Sequences:
+### Sequences:
 1. Make a Sequence that signals, without try/catch, async/await, and internal variabls, the flow of the component and its dependencies
 2. Signal the try/catch and async awaits, and variable change
 3. Link to the another diagram for the guard, service and goes on
 
-Activities:
+### Activities:
 
 4. Display the flow of each method in its scope
 
