@@ -11,12 +11,12 @@ The project is in its concept based on the logic of ngrev, NGast, AST Viewer and
 Goals:
 
 Sequences:
-** Make a Sequence that signals, without try/catch, async/await, and internal variabls, the flow of the component and its dependencies
-** Signal the try/catch and async awaits, and variable change
-** Link to the another diagram for the guard, service and goes on
+1. Make a Sequence that signals, without try/catch, async/await, and internal variabls, the flow of the component and its dependencies
+2. Signal the try/catch and async awaits, and variable change
+3. Link to the another diagram for the guard, service and goes on
 
 Activities:
 
-** Display the flow of each method in its scope
+4. Display the flow of each method in its scope
 
 
