@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tsc index.ts && node index.js example/extrato-anual.component.ts"
+    "test": "tsc index.ts && node index.js example/extrato-anual.component.ts",
+    "beta:test": "tsc index.ts && node index.js example/extrato-anual.component.ts"
+
   },
   "author": "",
   "license": "ISC",

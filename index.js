@@ -26,57 +26,84 @@ var properties = [];
 var methods = [];
 var componentMethods = ['ngOnInit'];
 var uml = '@staruml' +
-    'participant participant as Usuario';
+    ' autoactivate on ';
+'participant participant as Usuario';
 function print(node) {
-    // console.log(new Array(indent + 1).join(' ') + ts.SyntaxKind[node.kind] + '->');
     if (ts.SyntaxKind[node.kind] === 'Constructor') {
         ts.forEachChild(node, function (x) {
             if (ts.SyntaxKind[x.kind] === 'Parameter') {
                 var l = JSON.parse(JSON.stringify(x));
-                headers.push('boundary ' + l.type.typeName.escapedText + ' as ' + l.name.escapedText);
-                // console.log(l);
+                headers.push({
+                    type: 'boundary ',
+                    originalComponent: l.type.typeName.escapedText,
+                    aliasComponent: l.name.escapedText
+                });
             }
-            // console.log('=>' + new Array(indent + 1).join(' ') + ts.SyntaxKind[x.kind] + '->');
         });
     }
     if (ts.SyntaxKind[node.kind] === 'ClassDeclaration') {
         var l = JSON.parse(JSON.stringify(node));
-        headers.push('actor ' + l.name.escapedText + ' as ' + l.name.escapedText);
+        headers.push({
+            type: 'actor ',
+            originalComponent: l.name.escapedText,
+            aliasComponent: l.name.escapedText
+        });
         component = l.name.escapedText;
-        // console.log('classe=', l);
     }
     if (ts.SyntaxKind[node.kind] === 'PropertyDeclaration') {
         // Somente em atividades
     }
     if (ts.SyntaxKind[node.kind] === 'MethodDeclaration') {
         var l = JSON.parse(JSON.stringify(node));
-        //console.log('conteudo', l);
         var xx = node;
-        // console.log('method', xx.body);
         var p = l.name.escapedText;
         console.log('l.name.escapedText=', l.name.escapedText);
         if (componentMethods.includes(p)) {
             methods.push(component + '->' + component + ' : ' + p);
-            verificaChamadas(node, xx);
-            methods.push(component + '<-' + component + ' : ' + p);
+            verificaChamadas(node, component);
+            // methods.push(component + '<-' + component + ' : ' + p);
         }
     }
     if (ts.SyntaxKind[node.kind] === 'ThisDeclaration' || ts.SyntaxKind[node.kind] === 'PropertyAccessExpression') {
-        // console.log('Olha o this', node)
+        var hh = node;
+        var paraJson = JSON.parse(JSON.stringify(hh));
+        var prop_1 = hh.name.escapedText;
+        if (paraJson['expression']) {
+            console.log('[TEMOSALGOAQUI]', paraJson['expression']);
+        }
+        if (paraJson['expression'] && paraJson['expression']['name']) {
+            console.log('[2-TEMOSALGOAQUI]', paraJson['expression']['name']);
+        }
+        var isComponent = headers.find(function (x) { return x.aliasComponent === prop_1; });
+        console.log('[Olha o this!!!]', JSON.stringify(node));
+        console.log('[VERSAO PAE]', JSON.stringify(hh));
+        console.log('ts.SyntaxKind[node.kind]=', ts.SyntaxKind[node.kind]);
+        console.log('isComponent=', isComponent);
+        if (isComponent) {
+            console.log('FOUND=', prop_1);
+            var xpFilho = JSON.parse(JSON.stringify(hh));
+            if (xpFilho)
+                console.log('[EXCFILHO]', JSON.stringify(xpFilho));
+        }
     }
     indent++;
     ts.forEachChild(node, print);
     indent--;
 }
 function verificaChamadas(no, metodo) {
-    var xxx = metodo.name;
-    // console.log('filhos de ', xxx.escapedText   );
-    ts.forEachChild(no, function (x) {
-        if (ts.SyntaxKind[x.kind] === 'PropertyAccessExpression') {
-            var hh = x;
-            console.log('chamu ' + metodo, JSON.parse(JSON.stringify(no)));
+    // console.log("[filhos de " + metodo,"]:")
+    ts.forEachChild(no, function (noFilho) {
+        // console.log('[PPP]:', JSON.stringify(noFilho));
+        if (ts.SyntaxKind[noFilho.kind] === 'PropertyAccessExpression') {
+            var hh = noFilho;
+            var prop_2 = hh.name.escapedText;
+            var isComponent = headers.find(function (x) { return x.aliasComponent === prop_2; });
+            console.log('isComponent=', isComponent);
+            // const pp : ts.SyntaxKind.ThisKeyword = hh.expression as ts.SyntaxKind.ThisKeyword;
+            methods.push(metodo + '->' + metodo + ' : ' + hh.name.escapedText);
+            // console.log('chamou ' + xxx, JSON.parse(JSON.stringify(no)));
         }
-        verificaChamadas(x, metodo);
+        verificaChamadas(noFilho, metodo);
     });
 }
 ts.forEachChild(sc, function (x) {
