@@ -13,7 +13,11 @@ const pipes = workspace.getAllPipes();
 // console.log(components.rootNames);
 // console.log(components.rootNames);
 // console.log(process.cwd() + '\\example\\extrato-anual.component.ts');
-const file = process.cwd() + '\\example\\extrato-anual.component.ts';
+
+const diretorioArquivo='\\example';
+const nomeArquivo =  diretorioArquivo + '\\extrato-anual.component.ts'
+const file = process.cwd() + nomeArquivo;
+console.log('Generating: ', file);
 // 'C:\\Users\\tommy\\Downloads\\csf-canais-digitais-web-extrato-anual-de-tarifas\\csf-canais-digitais-web-extrato-anual-de-tarifas\\projects\\extrato-anual-tarifa\\src\\lib\\components\\extrato-anual\\extrato-anual.component.ts';
 const program = ts.createProgram([file], { allowJs: true });
 const sc = program.getSourceFile(file);
@@ -80,12 +84,31 @@ let uml = '@staruml' +
     // senao (this.variavel)
     //  coloca referencia a variavel local
     if(paraJson['expression'] ){
-      console.log('[TEMOSALGOAQUI]',paraJson['expression'])
+      if(paraJson['expression']['name'] ){
+        // console.log('[2TEMOSALGOAQUI]',paraJson['expression']);
+        //console.log('[3TEMOSALGOAQUI]',hh.getFullText(sc));
+        console.log('[2TEMOSALGOAQUI]',paraJson['name']['escapedText']);
+        const finalCall = paraJson['name']['escapedText'];
+        if(hh.expression){
+          methods.push(component + '->' + paraJson['expression']['name']['escapedText'] + ' : ' + finalCall);
+          console.log(paraJson['expression']['name']['escapedText'])
+          const h4 : ts.PropertyAccessExpression = hh.expression  as ts.PropertyAccessExpression;
+          console.log('[4TEMOSALGOAQUI]',h4.getFullText(sc));
+        }
+        const isComponent = headers.find( x => x.aliasComponent === prop);
+        if (isComponent){
+          console.log('FOUND=',prop);
+          const xpFilho = JSON.parse(JSON.stringify(hh))
+          if (xpFilho) console.log('[EXCFILHO]' + prop + '=>', JSON.stringify(xpFilho));
+        }else{
+          console.log('SALCI FUFUs');
+
+        }
+      }
+      // if (paraJson['expression'] && paraJson['expression']) console.log('[TEMOSALGOAQUI]',paraJson['expression'])
     }
-    if(paraJson['expression'] && paraJson['expression']['name'] ){
-      console.log('[2-TEMOSALGOAQUI]',paraJson['expression']['name'] )
-    }
-    const isComponent = headers.find( x => x.aliasComponent === prop);
+
+    /*const isComponent = headers.find( x => x.aliasComponent === prop);
     console.log('[Olha o this!!!]', JSON.stringify(node));
     console.log('[VERSAO PAE]', JSON.stringify(hh));
     console.log('ts.SyntaxKind[node.kind]=',ts.SyntaxKind[node.kind]);
@@ -94,7 +117,7 @@ let uml = '@staruml' +
       console.log('FOUND=',prop);
       const xpFilho = JSON.parse(JSON.stringify(hh))
       if (xpFilho) console.log('[EXCFILHO]', JSON.stringify(xpFilho));
-    }    
+    }   */
   }
   indent++;
   ts.forEachChild(node, print);
@@ -111,7 +134,7 @@ function verificaChamadas(no: ts.Node, metodo: string) {
       console.log('isComponent=',isComponent);
       // const pp : ts.SyntaxKind.ThisKeyword = hh.expression as ts.SyntaxKind.ThisKeyword;
 
-      
+
       methods.push(metodo + '->' + metodo + ' : ' + hh.name.escapedText);
 
       // console.log('chamou ' + xxx, JSON.parse(JSON.stringify(no)));
