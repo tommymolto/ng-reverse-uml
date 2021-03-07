@@ -1,0 +1,3 @@
+@staruml 
+ autoactivate on 
+ participant participant as Usuario

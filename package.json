@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tsc index.ts && node index.js example/extrato-anual.component.ts",
-    "beta:test": "tsc index.ts && node index.js example/extrato-anual.component.ts"
+    "test": "tsc src/*.ts --outDir=./compilado && node index.js example/extrato-anual.component.ts",
+    "beta:test": "tsc src/index.ts && node index.js example/extrato-anual.component.ts"
 
   },
   "author": "",
