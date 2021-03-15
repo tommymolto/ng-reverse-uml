@@ -1,8 +1,8 @@
 import { join } from 'path';
-import { WorkspaceSymbols } from 'ngast';
+// import { WorkspaceSymbols } from 'ngast';
 import * as ts from 'typescript';
 const fs = require('fs');
-import type Elemento from './models/Elemento';
+import  Elemento from './models/Elemento';
 import Arquivo from "./models/Arquivo";
 const config = join(process.cwd(), 'tsconfig.json');
 
@@ -19,8 +19,8 @@ export default class generateSequence {
     uml = '@staruml' +
         ' autoactivate on ' +
         ' participant participant as Usuario';
-    diretorioArquivo = '\\example';
-    nomeArquivo =  this.diretorioArquivo + '\\extrato-anual.component.ts'
+    diretorioArquivo = '/example';
+    nomeArquivo =  this.diretorioArquivo + '/extrato-anual.component.ts'
 
     constructor(arq: Arquivo){
         this.diretorioArquivo = arq.diretorio;

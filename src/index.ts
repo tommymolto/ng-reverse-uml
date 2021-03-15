@@ -13,8 +13,8 @@ const config = join(process.cwd(), 'tsconfig.json');
 // console.log(components.rootNames);
 // console.log(process.cwd() + '\\example\\extrato-anual.component.ts');
 
-const diretorioArquivo= '\\example';
-const nomeArquivo =  diretorioArquivo + '\\extrato-anual.component.ts'
+const diretorioArquivo= '/example';
+const nomeArquivo =  diretorioArquivo + '/extrato-anual.component.ts'
 const file = process.cwd() + nomeArquivo;
 console.log('Generating: ', file);
 // 'C:\\Users\\tommy\\Downloads\\csf-canais-digitais-web-extrato-anual-de-tarifas\\csf-canais-digitais-web-extrato-anual-de-tarifas\\projects\\extrato-anual-tarifa\\src\\lib\\components\\extrato-anual\\extrato-anual.component.ts';
@@ -46,7 +46,7 @@ const getAllFiles = function(dirPath: string, arrayOfFiles: Arquivo[]) {
       if (file.endsWith('.ts')){
         loga('info:',process.cwd(), dirPath)
         arrayOfFiles.push({
-          diretorio: join(process.cwd(), dirPath, "\\"),
+          diretorio: join(process.cwd(), dirPath, "/"),
           arquivo: file
         })
 
@@ -59,7 +59,7 @@ const getAllFiles = function(dirPath: string, arrayOfFiles: Arquivo[]) {
 
 const geraUmlSequenciaPorArquivo = function(arF: Arquivo[]){
   arF.forEach( (arquivo) => {
-    loga('Gerando PUML para ' + arquivo.diretorio + '/' + arquivo.arquivo );
+    loga('Gerando PUML para ' + arquivo.diretorio  + arquivo.arquivo );
     const puml = new generateSequence(arquivo);
     const arqpuml = new SalvaPUML(arquivo, puml.headers, puml.methods);
     arqpuml.montaSequencia();

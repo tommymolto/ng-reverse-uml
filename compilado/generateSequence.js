@@ -18,8 +18,8 @@ var generateSequence = /** @class */ (function () {
         this.uml = '@staruml' +
             ' autoactivate on ' +
             ' participant participant as Usuario';
-        this.diretorioArquivo = '\\example';
-        this.nomeArquivo = this.diretorioArquivo + '\\extrato-anual.component.ts';
+        this.diretorioArquivo = '/example';
+        this.nomeArquivo = this.diretorioArquivo + '/extrato-anual.component.ts';
         this.diretorioArquivo = arq.diretorio;
         this.nomeArquivo = this.diretorioArquivo + arq.arquivo;
         var file = process.cwd() + this.nomeArquivo;
