@@ -5,7 +5,7 @@ actor  ExtratoAnualComponent as ExtratoAnualComponent
 boundary  IExtratoAnualTarifaService as extratoAnualService
 boundary  IClienteService as clienteService
 ExtratoAnualComponent->ExtratoAnualComponent : ngOnInit 
-undefined->undefined : obterExtratoTarifas 
+ExtratoAnualComponent->ExtratoAnualComponent : obterExtratoTarifas 
 ExtratoAnualComponent->clienteService : numeroContaSelecionado 
 ExtratoAnualComponent->extratoAnualService : carregarListaExtratoAnualTarifas 
 ExtratoAnualComponent->clienteService : numeroContaSelecionado 

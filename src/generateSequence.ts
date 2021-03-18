@@ -76,7 +76,7 @@ export default class generateSequence {
             if (this.componentMethods.includes(p)) {
                 // @ts-ignore
                 this.methods.push(`${this.component}->${this.component} : ${p}`);
-
+                //this.metodo = this.component;
                 this.verificaChamadas(node, this.component);
                 // methods.push(component + '<-' + component + ' : ' + p);
             }
@@ -132,13 +132,14 @@ export default class generateSequence {
             if (ts.SyntaxKind[noFilho.kind] === 'PropertyAccessExpression') {
                 const hh : ts.PropertyAccessExpression = noFilho as ts.PropertyAccessExpression;
                 const prop = hh.name.escapedText;
+                this.loga(true,['isComponent?=',prop]);
                 const isComponent = this.headers.find( x => x.aliasComponent === prop);
-                this.loga(false,['isComponent=',isComponent]);
+                this.loga(true,['isComponent=',isComponent]);
                 // const pp : ts.SyntaxKind.ThisKeyword = hh.expression as ts.SyntaxKind.ThisKeyword;
 
 
                 // @ts-ignore
-                this.methods.push(this.metodo + '->' + this.metodo + ' : ' + hh.name.escapedText);
+                this.methods.push(metodo + '->' + metodo + ' : ' + hh.name.escapedText);
 
                 // console.log('chamou ' + xxx, JSON.parse(JSON.stringify(no)));
             }

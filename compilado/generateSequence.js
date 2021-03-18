@@ -70,6 +70,7 @@ var generateSequence = /** @class */ (function () {
             if (this.componentMethods.includes(p)) {
                 // @ts-ignore
                 this.methods.push(this.component + "->" + this.component + " : " + p);
+                //this.metodo = this.component;
                 this.verificaChamadas(node, this.component);
                 // methods.push(component + '<-' + component + ' : ' + p);
             }
@@ -126,11 +127,12 @@ var generateSequence = /** @class */ (function () {
             if (ts.SyntaxKind[noFilho.kind] === 'PropertyAccessExpression') {
                 var hh = noFilho;
                 var prop_2 = hh.name.escapedText;
+                _this.loga(true, ['isComponent?=', prop_2]);
                 var isComponent = _this.headers.find(function (x) { return x.aliasComponent === prop_2; });
-                _this.loga(false, ['isComponent=', isComponent]);
+                _this.loga(true, ['isComponent=', isComponent]);
                 // const pp : ts.SyntaxKind.ThisKeyword = hh.expression as ts.SyntaxKind.ThisKeyword;
                 // @ts-ignore
-                _this.methods.push(_this.metodo + '->' + _this.metodo + ' : ' + hh.name.escapedText);
+                _this.methods.push(metodo + '->' + metodo + ' : ' + hh.name.escapedText);
                 // console.log('chamou ' + xxx, JSON.parse(JSON.stringify(no)));
             }
             _this.verificaChamadas(noFilho, metodo);
