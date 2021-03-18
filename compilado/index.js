@@ -24,7 +24,7 @@ var headers = [];
 var properties = [];
 var methods = [];
 var componentMethods = ['ngOnInit'];
-var uml = '@staruml' +
+var uml = '@startuml' +
     ' autoactivate on ';
 'participant participant as Usuario';
 var getAllFiles = function (dirPath, arrayOfFiles) {

@@ -15,7 +15,7 @@ var SalvaPUML = /** @class */ (function () {
     }
     SalvaPUML.prototype.montaSequencia = function () {
         var _this = this;
-        this.conteudo = '@staruml \r\n' +
+        this.conteudo = '@startuml \r\n' +
             ' autoactivate on \r\n' +
             ' participant participant as Usuario\r\n';
         this.cabecalhos.forEach(function (cab) {
@@ -24,6 +24,7 @@ var SalvaPUML = /** @class */ (function () {
         this.metodos.forEach(function (linha) {
             _this.conteudo += linha + ' \r\n';
         });
+        this.conteudo += '@enduml';
     };
     SalvaPUML.prototype.salvaArquivo = function (tipoUML) {
         if (tipoUML === void 0) { tipoUML = tipouml_1.Tipouml.Sequencia; }

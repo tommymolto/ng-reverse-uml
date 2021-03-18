@@ -15,7 +15,7 @@ var generateSequence = /** @class */ (function () {
         this.properties = [];
         this.methods = [];
         this.componentMethods = ['ngOnInit'];
-        this.uml = '@staruml' +
+        this.uml = '@startuml' +
             ' autoactivate on ' +
             ' participant participant as Usuario';
         this.diretorioArquivo = '/example';
@@ -72,6 +72,7 @@ var generateSequence = /** @class */ (function () {
                 this.methods.push(this.component + "->" + this.component + " : " + p);
                 //this.metodo = this.component;
                 this.verificaChamadas(node, this.component);
+                //this.methods.push('deactivate '+ this.component);
                 // methods.push(component + '<-' + component + ' : ' + p);
             }
         }
@@ -119,12 +120,14 @@ var generateSequence = /** @class */ (function () {
         // ts.forEachChild(node, this.exibe);
         // this.indent--;
     };
-    generateSequence.prototype.verificaChamadas = function (no, metodo) {
+    generateSequence.prototype.verificaChamadas = function (no, metodo, indice) {
         var _this = this;
+        if (indice === void 0) { indice = 0; }
         // console.log("[filhos de " + metodo,"]:")
         ts.forEachChild(no, function (noFilho) {
             // console.log('[PPP]:', JSON.stringify(noFilho));
             if (ts.SyntaxKind[noFilho.kind] === 'PropertyAccessExpression') {
+                indice++;
                 var hh = noFilho;
                 var prop_2 = hh.name.escapedText;
                 _this.loga(true, ['isComponent?=', prop_2]);
@@ -135,8 +138,9 @@ var generateSequence = /** @class */ (function () {
                 _this.methods.push(metodo + '->' + metodo + ' : ' + hh.name.escapedText);
                 // console.log('chamou ' + xxx, JSON.parse(JSON.stringify(no)));
             }
-            _this.verificaChamadas(noFilho, metodo);
+            _this.verificaChamadas(noFilho, metodo, indice);
         });
+        // if (indice > 0) this.methods.push('deactivate '+ metodo);
     };
     generateSequence.prototype.loga = function (fg) {
         if (fg === void 0) { fg = true; }

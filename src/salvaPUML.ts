@@ -14,7 +14,7 @@ export default class SalvaPUML{
         this.metodos = metodos;
     }
     montaSequencia(){
-        this.conteudo = '@staruml \r\n' +
+        this.conteudo = '@startuml \r\n' +
             ' autoactivate on \r\n' +
             ' participant participant as Usuario\r\n';
         this.cabecalhos.forEach((cab: Elemento) => {
@@ -23,6 +23,7 @@ export default class SalvaPUML{
         this.metodos.forEach( (linha: string) => {
             this.conteudo += linha + ' \r\n';
         });
+        this.conteudo += '@enduml';
     }
     salvaArquivo(tipoUML = Tipouml.Sequencia){
         const f = this.arquivo.diretorio + this.arquivo.arquivo + '.' + tipoUML + '.puml';

@@ -16,7 +16,7 @@ export default class generateSequence {
     properties = [];
     public methods = [];
     componentMethods= ['ngOnInit'];
-    uml = '@staruml' +
+    uml = '@startuml' +
         ' autoactivate on ' +
         ' participant participant as Usuario';
     diretorioArquivo = '/example';
@@ -78,6 +78,7 @@ export default class generateSequence {
                 this.methods.push(`${this.component}->${this.component} : ${p}`);
                 //this.metodo = this.component;
                 this.verificaChamadas(node, this.component);
+                //this.methods.push('deactivate '+ this.component);
                 // methods.push(component + '<-' + component + ' : ' + p);
             }
 
@@ -125,11 +126,12 @@ export default class generateSequence {
         // ts.forEachChild(node, this.exibe);
         // this.indent--;
     }
-    verificaChamadas(no: ts.Node, metodo: string) {
+    verificaChamadas(no: ts.Node, metodo: string, indice: number = 0) {
         // console.log("[filhos de " + metodo,"]:")
         ts.forEachChild(no, noFilho => {
             // console.log('[PPP]:', JSON.stringify(noFilho));
             if (ts.SyntaxKind[noFilho.kind] === 'PropertyAccessExpression') {
+                indice++
                 const hh : ts.PropertyAccessExpression = noFilho as ts.PropertyAccessExpression;
                 const prop = hh.name.escapedText;
                 this.loga(true,['isComponent?=',prop]);
@@ -143,8 +145,9 @@ export default class generateSequence {
 
                 // console.log('chamou ' + xxx, JSON.parse(JSON.stringify(no)));
             }
-            this.verificaChamadas(noFilho, metodo);
+            this.verificaChamadas(noFilho, metodo, indice);
         });
+        // if (indice > 0) this.methods.push('deactivate '+ metodo);
     }
     loga(fg = true, ...args: any[]){
         if (fg) console.log(...args)

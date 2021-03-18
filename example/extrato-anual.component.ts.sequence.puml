@@ -1,4 +1,4 @@
-@staruml 
+@startuml 
  autoactivate on 
  participant participant as Usuario
 actor  ExtratoAnualComponent as ExtratoAnualComponent
@@ -10,3 +10,4 @@ ExtratoAnualComponent->clienteService : numeroContaSelecionado
 ExtratoAnualComponent->extratoAnualService : carregarListaExtratoAnualTarifas 
 ExtratoAnualComponent->clienteService : numeroContaSelecionado 
 ExtratoAnualComponent->extratoAnualService : carregarPdfExtratoAnualTarifa 
+@enduml

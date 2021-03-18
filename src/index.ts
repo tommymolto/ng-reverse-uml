@@ -27,7 +27,7 @@ let headers : Elemento[] = [];
 let properties = [];
 let methods = [];
 let componentMethods= ['ngOnInit'];
-let uml = '@staruml' +
+let uml = '@startuml' +
 ' autoactivate on '
   'participant participant as Usuario';
 
