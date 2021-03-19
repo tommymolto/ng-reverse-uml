@@ -1,8 +1,8 @@
 @startuml
- autoactivate on 
- participant participant as Usuario
- actor ExtratoAnualComponent as ExtratoAnualComponent
- boundary IExtratoAnualTarifaService as extratoAnualService
+autoactivate on
+participant participant as Usuario
+actor ExtratoAnualComponent as ExtratoAnualComponent
+boundary IExtratoAnualTarifaService as extratoAnualService
 boundary IClienteService as clienteService
 ExtratoAnualComponent->ExtratoAnualComponent #005500 : ngOnInit
 ExtratoAnualComponent->ExtratoAnualComponent #0055FF :obterExtratoTarifas

@@ -13,6 +13,8 @@ var generateSequence = /** @class */ (function () {
         this.component = '';
         this.headers = [];
         this.properties = [];
+        this.contagemMetodos = 0;
+        this.cores = ['#005500', '#0055FF', '#0055F0', '#00FF00', '#0055F0'];
         this.methods = [];
         this.componentMethods = ['ngOnInit'];
         this.uml = '@startuml' +
@@ -68,12 +70,16 @@ var generateSequence = /** @class */ (function () {
             var p = l.name.escapedText;
             this.loga(false, ['l.name.escapedText=', l.name.escapedText]);
             if (this.componentMethods.includes(p)) {
+                this.contagemMetodos++;
                 // @ts-ignore
-                this.methods.push(this.component + "->" + this.component + " : " + p);
+                this.methods.push(this.component + "->" + this.component + " " + this.cores[this.contagemMetodos] + ": " + p);
                 //this.metodo = this.component;
                 this.verificaChamadas(node, this.component);
                 //this.methods.push('deactivate '+ this.component);
                 // methods.push(component + '<-' + component + ' : ' + p);
+            }
+            else {
+                this.methods.push(this.usuario + "->" + this.component + " " + this.cores[this.contagemMetodos] + ": " + p);
             }
         }
         if (ts.SyntaxKind[node.kind] === 'ThisDeclaration' || ts.SyntaxKind[node.kind] === 'PropertyAccessExpression') {

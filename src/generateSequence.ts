@@ -14,6 +14,8 @@ export default class generateSequence {
     component = '';
     public headers : Elemento[] = [];
     properties = [];
+    contagemMetodos = 0;
+    cores = ['#005500','#0055FF','#0055F0','#00FF00','#0055F0'];
     public methods = [];
     componentMethods= ['ngOnInit'];
     uml = '@startuml' +
@@ -21,6 +23,7 @@ export default class generateSequence {
         ' participant participant as Usuario';
     diretorioArquivo = '/example';
     nomeArquivo =  this.diretorioArquivo + '/extrato-anual.component.ts'
+
 
     constructor(arq: Arquivo){
         this.diretorioArquivo = arq.diretorio;
@@ -30,7 +33,10 @@ export default class generateSequence {
 
         this.program = ts.createProgram([this.nomeArquivo], { allowJs: true });
         this.sc = this.program.getSourceFile( this.nomeArquivo );
-        this.loga(false,['lendo ', this.sc])
+
+        this.loga(false,['lendo ', this.sc]);
+
+
         // @ts-ignore
         ts.forEachChild(this.sc, x => {
             // console.log(x);
@@ -74,12 +80,16 @@ export default class generateSequence {
             const p = l.name.escapedText;
             this.loga(false,['l.name.escapedText=',l.name.escapedText]);
             if (this.componentMethods.includes(p)) {
+                this.contagemMetodos++;
                 // @ts-ignore
-                this.methods.push(`${this.component}->${this.component} : ${p}`);
+                this.methods.push(`${this.component}->${this.component} ${this.cores[this.contagemMetodos]}: ${p}`);
                 //this.metodo = this.component;
                 this.verificaChamadas(node, this.component);
                 //this.methods.push('deactivate '+ this.component);
                 // methods.push(component + '<-' + component + ' : ' + p);
+            }else{
+                this.methods.push(`${this.usuario}->${this.component} ${this.cores[this.contagemMetodos]}: ${p}`);
+
             }
 
         }
@@ -101,6 +111,7 @@ export default class generateSequence {
                     this.loga(false,['[2TEMOSALGOAQUI]',paraJson['name']['escapedText']]);
                     const finalCall = paraJson['name']['escapedText'];
                     if(hh.expression){
+
                         // @ts-ignore
                         this.methods.push(`${this.component}->${paraJson['expression']['name']['escapedText']} : ${finalCall}`);
                         this.loga(false,[paraJson['expression']['name']['escapedText']])

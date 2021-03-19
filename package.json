@@ -1,13 +1,17 @@
 {
-  "name": "ng-plantuml-generator",
+  "name": "ng-reverse-uml",
   "version": "0.0.1",
-  "description": "",
+  "description": "Generate UML sequence and activity from angular 4+ source code",
   "main": "index.js",
   "scripts": {
     "test": "tsc src/*.ts --outDir ./compilado && node ./compilado/index.js example/extrato-anual.component.ts",
     "beta:test": "tsc src/index.ts && node index.js example/extrato-anual.component.ts"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tommymolto/ng-reverse-uml.git"
+  },
+  "author": "Paulo Marinho",
   "license": "ISC",
   "devDependencies": {
     "@angular/core": "^11.1.2",
