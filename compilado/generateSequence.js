@@ -20,8 +20,10 @@ var generateSequence = /** @class */ (function () {
         this.uml = '@startuml' +
             ' autoactivate on ' +
             ' participant participant as Usuario';
-        this.diretorioArquivo = '/example';
-        this.nomeArquivo = this.diretorioArquivo + '/extrato-anual.component.ts';
+        this.diretorioArquivo = '';
+        this.nomeArquivo = '';
+        this.novaEstrutura = [];
+        this.metodoAtual = '';
         this.diretorioArquivo = arq.diretorio;
         this.nomeArquivo = this.diretorioArquivo + arq.arquivo;
         var file = process.cwd() + this.nomeArquivo;
@@ -34,8 +36,9 @@ var generateSequence = /** @class */ (function () {
             // console.log(x);
             _this.exibe(x);
         });
-        this.loga(true, ['headers', this.headers]);
-        this.loga(true, ['methods', this.methods]);
+        this.loga(false, ['headers', this.headers]);
+        // this.loga(true,['methods', this.methods]);
+        this.loga(true, ['novaEstrutura', this.novaEstrutura]);
     }
     generateSequence.prototype.exibe = function (node) {
         var _this = this;
@@ -68,9 +71,16 @@ var generateSequence = /** @class */ (function () {
             var l = JSON.parse(JSON.stringify(node));
             var xx = node;
             var p = l.name.escapedText;
-            this.loga(false, ['l.name.escapedText=', l.name.escapedText]);
+            this.loga(true, ['l.name.escapedText=', l.name.escapedText]);
+            var tt = this.headers.find(function (x) { return x.originalComponent === _this.component; });
+            this.metodoAtual = p;
+            this.novaEstrutura.push({
+                componente: tt && tt.aliasComponent ? tt.aliasComponent : this.component,
+                metodo: p,
+                chamadas: []
+            });
             if (this.componentMethods.includes(p)) {
-                this.contagemMetodos++;
+                //this.contagemMetodos++;
                 // @ts-ignore
                 this.methods.push(this.component + "->" + this.component + " " + this.cores[this.contagemMetodos] + ": " + p);
                 //this.metodo = this.component;
@@ -79,13 +89,15 @@ var generateSequence = /** @class */ (function () {
                 // methods.push(component + '<-' + component + ' : ' + p);
             }
             else {
+                console.log('SALCI', p);
+                this.verificaChamadas(node, this.component);
                 this.methods.push(this.usuario + "->" + this.component + " " + this.cores[this.contagemMetodos] + ": " + p);
             }
         }
         if (ts.SyntaxKind[node.kind] === 'ThisDeclaration' || ts.SyntaxKind[node.kind] === 'PropertyAccessExpression') {
             var hh = node;
             var paraJson = JSON.parse(JSON.stringify(hh));
-            var prop_1 = hh.name.escapedText;
+            var prop = hh.name.escapedText;
             // se tem 3 nivel de propriedade (this.variavel.metodo)
             //  se 2o nivel é um dos componentes com alias (variavel === componente)
             //    cria referencia ao componente e metodo
@@ -100,22 +112,35 @@ var generateSequence = /** @class */ (function () {
                     this.loga(false, ['[2TEMOSALGOAQUI]', paraJson['name']['escapedText']]);
                     var finalCall = paraJson['name']['escapedText'];
                     if (hh.expression) {
+                        var pp = this.novaEstrutura.findIndex(function (x) { return x.componente === _this.component && x.metodo === _this.metodoAtual; });
+                        /*console.log('indice',pp);
+                        console.log('add',{
+                            componente: paraJson['expression']['name']['escapedText'],
+                            metodo: finalCall
+                        });*/
+                        this.novaEstrutura[pp].chamadas.push({
+                            componente: paraJson['expression']['name']['escapedText'],
+                            metodo: finalCall
+                        });
+                        console.log('this.novaEstrutura[pp].chamadas=', this.novaEstrutura[pp].chamadas);
                         // @ts-ignore
                         this.methods.push(this.component + "->" + paraJson['expression']['name']['escapedText'] + " : " + finalCall);
                         this.loga(false, [paraJson['expression']['name']['escapedText']]);
                         var h4 = hh.expression;
                         this.loga(false, ['[4TEMOSALGOAQUI]', h4.getFullText(this.sc)]);
                     }
-                    var isComponent = this.headers.find(function (x) { return x.aliasComponent === prop_1; });
-                    if (isComponent) {
-                        this.loga(false, ['FOUND=', prop_1]);
-                        var xpFilho = JSON.parse(JSON.stringify(hh));
-                        if (xpFilho)
-                            this.loga(false, ['[EXCFILHO]' + prop_1 + '=>', JSON.stringify(xpFilho)]);
-                    }
                     else {
-                        this.loga(false, ['SALCI FUFUs']);
+                        console.log('ERRO', finalCall);
                     }
+                    /*const isComponent = this.headers.find( x => x.aliasComponent === prop);
+                    if (isComponent){
+                        this.loga(false,['FOUND=',prop]);
+                        const xpFilho = JSON.parse(JSON.stringify(hh))
+                        if (xpFilho) this.loga(false, ['[EXCFILHO]' + prop + '=>', JSON.stringify(xpFilho)]);
+                    }else{
+                        this.loga(false, ['SALCI FUFUs']);
+
+                    }*/
                 }
             }
         }
@@ -123,26 +148,23 @@ var generateSequence = /** @class */ (function () {
         node.forEachChild(function (x) {
             _this.exibe(x);
         });
-        // ts.forEachChild(node, this.exibe);
-        // this.indent--;
     };
     generateSequence.prototype.verificaChamadas = function (no, metodo, indice) {
         var _this = this;
         if (indice === void 0) { indice = 0; }
-        // console.log("[filhos de " + metodo,"]:")
+        console.log('verificaChamadas', metodo);
         ts.forEachChild(no, function (noFilho) {
-            // console.log('[PPP]:', JSON.stringify(noFilho));
             if (ts.SyntaxKind[noFilho.kind] === 'PropertyAccessExpression') {
-                indice++;
+                console.log('cheguei no ', metodo);
                 var hh = noFilho;
-                var prop_2 = hh.name.escapedText;
-                _this.loga(true, ['isComponent?=', prop_2]);
-                var isComponent = _this.headers.find(function (x) { return x.aliasComponent === prop_2; });
-                _this.loga(true, ['isComponent=', isComponent]);
-                // const pp : ts.SyntaxKind.ThisKeyword = hh.expression as ts.SyntaxKind.ThisKeyword;
+                var prop = hh.name.escapedText;
+                var pp = _this.novaEstrutura.findIndex(function (x) { return x.componente === _this.component && x.metodo === _this.metodoAtual; });
+                _this.novaEstrutura[pp].chamadas.push({
+                    componente: metodo,
+                    metodo: prop
+                });
                 // @ts-ignore
                 _this.methods.push(metodo + '->' + metodo + ' : ' + hh.name.escapedText);
-                // console.log('chamou ' + xxx, JSON.parse(JSON.stringify(no)));
             }
             _this.verificaChamadas(noFilho, metodo, indice);
         });

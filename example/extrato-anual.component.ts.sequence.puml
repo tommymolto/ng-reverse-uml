@@ -4,12 +4,28 @@
 actor  ExtratoAnualComponent as ExtratoAnualComponent
 boundary  IExtratoAnualTarifaService as extratoAnualService
 boundary  IClienteService as clienteService
-ExtratoAnualComponent->ExtratoAnualComponent #0055FF: ngOnInit 
+ExtratoAnualComponent->ExtratoAnualComponent #005500: ngOnInit 
 ExtratoAnualComponent->ExtratoAnualComponent : obterExtratoTarifas 
-Usuario->ExtratoAnualComponent #0055FF: obterExtratoTarifas 
+ExtratoAnualComponent->ExtratoAnualComponent : elementLoading 
+ExtratoAnualComponent->ExtratoAnualComponent : numeroContaSelecionado 
+ExtratoAnualComponent->ExtratoAnualComponent : clienteService 
+ExtratoAnualComponent->ExtratoAnualComponent : extratoTarifas 
+ExtratoAnualComponent->ExtratoAnualComponent : carregarListaExtratoAnualTarifas 
+ExtratoAnualComponent->ExtratoAnualComponent : extratoAnualService 
+ExtratoAnualComponent->ExtratoAnualComponent : errorTarifa 
+ExtratoAnualComponent->ExtratoAnualComponent : elementLoading 
+Usuario->ExtratoAnualComponent #005500: obterExtratoTarifas 
 ExtratoAnualComponent->clienteService : numeroContaSelecionado 
 ExtratoAnualComponent->extratoAnualService : carregarListaExtratoAnualTarifas 
-Usuario->ExtratoAnualComponent #0055FF: downloadPdf 
+ExtratoAnualComponent->ExtratoAnualComponent : numeroContaSelecionado 
+ExtratoAnualComponent->ExtratoAnualComponent : clienteService 
+ExtratoAnualComponent->ExtratoAnualComponent : carregarPdfExtratoAnualTarifa 
+ExtratoAnualComponent->ExtratoAnualComponent : extratoAnualService 
+ExtratoAnualComponent->ExtratoAnualComponent : createElement 
+ExtratoAnualComponent->ExtratoAnualComponent : href 
+ExtratoAnualComponent->ExtratoAnualComponent : download 
+ExtratoAnualComponent->ExtratoAnualComponent : click 
+Usuario->ExtratoAnualComponent #005500: downloadPdf 
 ExtratoAnualComponent->clienteService : numeroContaSelecionado 
 ExtratoAnualComponent->extratoAnualService : carregarPdfExtratoAnualTarifa 
 @enduml

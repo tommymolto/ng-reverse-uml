@@ -61,6 +61,7 @@ const geraUmlSequenciaPorArquivo = function(arF: Arquivo[]){
   arF.forEach( (arquivo) => {
     loga('Gerando PUML para ' + arquivo.diretorio  + arquivo.arquivo );
     const puml = new generateSequence(arquivo);
+    console.log('novaEstrutura=', JSON.stringify(puml.novaEstrutura));
     const arqpuml = new SalvaPUML(arquivo, puml.headers, puml.methods);
     arqpuml.montaSequencia();
     arqpuml.salvaArquivo(Tipouml.Sequencia);
