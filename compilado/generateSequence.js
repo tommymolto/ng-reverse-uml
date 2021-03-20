@@ -90,7 +90,7 @@ var generateSequence = /** @class */ (function () {
             }
             else {
                 console.log('SALCI', p);
-                this.verificaChamadas(node, this.component);
+                // this.verificaChamadas(node, this.component);
                 this.methods.push(this.usuario + "->" + this.component + " " + this.cores[this.contagemMetodos] + ": " + p);
             }
         }
