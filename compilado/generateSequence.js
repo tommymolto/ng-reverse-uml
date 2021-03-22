@@ -71,7 +71,7 @@ var generateSequence = /** @class */ (function () {
             var l = JSON.parse(JSON.stringify(node));
             var xx = node;
             var p = l.name.escapedText;
-            this.loga(true, ['l.name.escapedText=', l.name.escapedText]);
+            this.loga(false, ['l.name.escapedText=', l.name.escapedText]);
             var tt = this.headers.find(function (x) { return x.originalComponent === _this.component; });
             this.metodoAtual = p;
             this.novaEstrutura.push({
@@ -89,7 +89,8 @@ var generateSequence = /** @class */ (function () {
                 // methods.push(component + '<-' + component + ' : ' + p);
             }
             else {
-                console.log('SALCI', p);
+                this.loga(false, ['SALCI', p]);
+                //console.log('SALCI',p);
                 // this.verificaChamadas(node, this.component);
                 this.methods.push(this.usuario + "->" + this.component + " " + this.cores[this.contagemMetodos] + ": " + p);
             }
@@ -120,9 +121,11 @@ var generateSequence = /** @class */ (function () {
                         });*/
                         this.novaEstrutura[pp].chamadas.push({
                             componente: paraJson['expression']['name']['escapedText'],
-                            metodo: finalCall
+                            metodo: finalCall,
+                            chamadas: []
                         });
-                        console.log('this.novaEstrutura[pp].chamadas=', this.novaEstrutura[pp].chamadas);
+                        this.loga(false, ['this.novaEstrutura[pp].chamadas=', this.novaEstrutura[pp].chamadas]);
+                        // console.log('this.novaEstrutura[pp].chamadas=',this.novaEstrutura[pp].chamadas);
                         // @ts-ignore
                         this.methods.push(this.component + "->" + paraJson['expression']['name']['escapedText'] + " : " + finalCall);
                         this.loga(false, [paraJson['expression']['name']['escapedText']]);
@@ -130,7 +133,7 @@ var generateSequence = /** @class */ (function () {
                         this.loga(false, ['[4TEMOSALGOAQUI]', h4.getFullText(this.sc)]);
                     }
                     else {
-                        console.log('ERRO', finalCall);
+                        // console.log('ERRO', finalCall)
                     }
                     /*const isComponent = this.headers.find( x => x.aliasComponent === prop);
                     if (isComponent){
@@ -152,16 +155,18 @@ var generateSequence = /** @class */ (function () {
     generateSequence.prototype.verificaChamadas = function (no, metodo, indice) {
         var _this = this;
         if (indice === void 0) { indice = 0; }
-        console.log('verificaChamadas', metodo);
+        this.loga(false, ['verificaChamadas', metodo]);
+        //console.log('verificaChamadas',  metodo);
         ts.forEachChild(no, function (noFilho) {
             if (ts.SyntaxKind[noFilho.kind] === 'PropertyAccessExpression') {
-                console.log('cheguei no ', metodo);
+                _this.loga(false, ['cheguei no ', metodo]);
                 var hh = noFilho;
                 var prop = hh.name.escapedText;
                 var pp = _this.novaEstrutura.findIndex(function (x) { return x.componente === _this.component && x.metodo === _this.metodoAtual; });
                 _this.novaEstrutura[pp].chamadas.push({
                     componente: metodo,
-                    metodo: prop
+                    metodo: prop,
+                    chamadas: []
                 });
                 // @ts-ignore
                 _this.methods.push(metodo + '->' + metodo + ' : ' + hh.name.escapedText);
@@ -178,8 +183,6 @@ var generateSequence = /** @class */ (function () {
         }
         if (fg)
             console.log.apply(console, args);
-    };
-    generateSequence.prototype.salvaSequencia = function (headers, metodos) {
     };
     return generateSequence;
 }());

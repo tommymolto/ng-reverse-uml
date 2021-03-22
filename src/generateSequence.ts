@@ -79,7 +79,7 @@ export default class generateSequence {
             const l = JSON.parse(JSON.stringify(node));
             const xx: ts.MethodDeclaration = node as ts.MethodDeclaration;
             const p = l.name.escapedText;
-            this.loga(true,['l.name.escapedText=',l.name.escapedText]);
+            this.loga(false,['l.name.escapedText=',l.name.escapedText]);
             const tt = this.headers.find(x => x.originalComponent === this.component);
             this.metodoAtual = p;
 
@@ -98,7 +98,9 @@ export default class generateSequence {
                 //this.methods.push('deactivate '+ this.component);
                 // methods.push(component + '<-' + component + ' : ' + p);
             }else{
-                console.log('SALCI',p);
+                this.loga(false,['SALCI',p]);
+
+                //console.log('SALCI',p);
                 // this.verificaChamadas(node, this.component);
 
                 this.methods.push(`${this.usuario}->${this.component} ${this.cores[this.contagemMetodos]}: ${p}`);
@@ -132,16 +134,19 @@ export default class generateSequence {
                         });*/
                         this.novaEstrutura[pp].chamadas.push({
                             componente: paraJson['expression']['name']['escapedText'],
-                            metodo: finalCall
+                            metodo: finalCall,
+                            chamadas: [] as Sequencia[]
                         } as Sequencia);
-                        console.log('this.novaEstrutura[pp].chamadas=',this.novaEstrutura[pp].chamadas);
+                        this.loga(false,['this.novaEstrutura[pp].chamadas=',this.novaEstrutura[pp].chamadas]);
+
+                        // console.log('this.novaEstrutura[pp].chamadas=',this.novaEstrutura[pp].chamadas);
                         // @ts-ignore
                         this.methods.push(`${this.component}->${paraJson['expression']['name']['escapedText']} : ${finalCall}`);
                         this.loga(false,[paraJson['expression']['name']['escapedText']])
                         const h4 : ts.PropertyAccessExpression = hh.expression  as ts.PropertyAccessExpression;
                         this.loga(false,['[4TEMOSALGOAQUI]',h4.getFullText(this.sc)]);
                     }else{
-                        console.log('ERRO', finalCall)
+                        // console.log('ERRO', finalCall)
                     }
                     /*const isComponent = this.headers.find( x => x.aliasComponent === prop);
                     if (isComponent){
@@ -162,16 +167,20 @@ export default class generateSequence {
 
     }
     verificaChamadas(no: ts.Node, metodo: string, indice: number = 0) {
-        console.log('verificaChamadas',  metodo);
+        this.loga(false,['verificaChamadas', metodo]);
+        //console.log('verificaChamadas',  metodo);
         ts.forEachChild(no, noFilho => {
             if (ts.SyntaxKind[noFilho.kind] === 'PropertyAccessExpression') {
-                console.log('cheguei no ', metodo)
+                this.loga(false,['cheguei no ', metodo]);
+
+
                 const hh : ts.PropertyAccessExpression = noFilho as ts.PropertyAccessExpression;
                 const prop = hh.name.escapedText;
                 const pp = this.novaEstrutura.findIndex(x => x.componente === this.component && x.metodo === this.metodoAtual);
                 this.novaEstrutura[pp].chamadas.push({
                     componente: metodo,
-                    metodo: prop
+                    metodo: prop,
+                    chamadas: [] as Sequencia[]
                 } as Sequencia);
                 // @ts-ignore
                 this.methods.push(metodo + '->' + metodo + ' : ' + hh.name.escapedText);
@@ -183,10 +192,7 @@ export default class generateSequence {
     loga(fg = true, ...args: any[]){
         if (fg) console.log(...args)
     }
-    salvaSequencia(headers, metodos){
 
-
-    }
 
 
 }

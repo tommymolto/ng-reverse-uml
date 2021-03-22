@@ -1,15 +1,16 @@
 @startuml 
- autoactivate on 
  participant participant as Usuario
 actor  ExtratoAnualComponent as ExtratoAnualComponent
 boundary  IExtratoAnualTarifaService as extratoAnualService
 boundary  IClienteService as clienteService
-ExtratoAnualComponent->ExtratoAnualComponent #005500: ngOnInit 
-ExtratoAnualComponent->ExtratoAnualComponent : obterExtratoTarifas 
-Usuario->ExtratoAnualComponent #005500: obterExtratoTarifas 
-ExtratoAnualComponent->clienteService : numeroContaSelecionado 
-ExtratoAnualComponent->extratoAnualService : carregarListaExtratoAnualTarifas 
-Usuario->ExtratoAnualComponent #005500: downloadPdf 
-ExtratoAnualComponent->clienteService : numeroContaSelecionado 
-ExtratoAnualComponent->extratoAnualService : carregarPdfExtratoAnualTarifa 
+Usuario -> ExtratoAnualComponent:ngOnInit
+activate ExtratoAnualComponent #005500
+ExtratoAnualComponent -> ExtratoAnualComponent:obterExtratoTarifas
+activate ExtratoAnualComponent #0055FF
+ExtratoAnualComponent -> clienteService:numeroContaSelecionado
+ExtratoAnualComponent -> extratoAnualService:carregarListaExtratoAnualTarifas
+Usuario -> ExtratoAnualComponent:downloadPdf
+activate ExtratoAnualComponent #005500
+ExtratoAnualComponent -> clienteService:numeroContaSelecionado
+ExtratoAnualComponent -> extratoAnualService:carregarPdfExtratoAnualTarifa
 @enduml

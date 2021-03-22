@@ -32,19 +32,19 @@ let uml = '@startuml' +
   'participant participant as Usuario';
 
 const getAllFiles = function(dirPath: string, arrayOfFiles: Arquivo[]) {
-  loga('dir:', process.cwd() + dirPath)
+  loga(true, ['dir:', process.cwd() + dirPath])
   const files = fs.readdirSync(process.cwd() + dirPath)
 
   arrayOfFiles = arrayOfFiles || []
 
   files.forEach(function(file: string) {
-    loga('38:',process.cwd()  + dirPath + "/" + file)
+    loga(false, [process.cwd()  + dirPath + "/" + file]);
     if (fs.statSync(process.cwd()  + dirPath + "/" + file).isDirectory()) {
       arrayOfFiles = getAllFiles( dirPath + "/" + file, arrayOfFiles)
     } else {
       // @ts-ignore
       if (file.endsWith('.ts')){
-        loga('info:',process.cwd(), dirPath)
+        loga(false,['info:',process.cwd(), dirPath])
         arrayOfFiles.push({
           diretorio: join(process.cwd(), dirPath, "/"),
           arquivo: file
@@ -57,21 +57,21 @@ const getAllFiles = function(dirPath: string, arrayOfFiles: Arquivo[]) {
   return arrayOfFiles
 }
 
-const geraUmlSequenciaPorArquivo = function(arF: Arquivo[]){
-  arF.forEach( (arquivo) => {
-    loga('Gerando PUML para ' + arquivo.diretorio  + arquivo.arquivo );
+const geraUmlSequenciaPorArquivo =  function(arF: Arquivo[]){
+  for (const arquivo of arF) {
+    loga(false, ['Gerando PUML para ' + arquivo.diretorio  + arquivo.arquivo ]);
     const puml = new generateSequence(arquivo);
-    console.log('novaEstrutura=', JSON.stringify(puml.novaEstrutura));
-    const arqpuml = new SalvaPUML(arquivo, puml.headers, puml.methods);
+    loga(false, ['novaEstrutura=',JSON.stringify(puml.novaEstrutura)]);
+    const arqpuml = new SalvaPUML(arquivo, puml.headers, puml.methods, puml.novaEstrutura);
     arqpuml.montaSequencia();
     arqpuml.salvaArquivo(Tipouml.Sequencia);
 
-  })
+  }
 }
-const loga = function (...args: any[]){
-  // console.log(...args);
+const loga = function(fg = true, ...args: any[]){
+  if (fg) console.log(...args)
 }
 const listaArq = getAllFiles(diretorioArquivo, []);
-console.log('geraremos', listaArq)
+loga(false, ['geraremos', listaArq]);
 geraUmlSequenciaPorArquivo(listaArq)
 //console.log(listaArq)

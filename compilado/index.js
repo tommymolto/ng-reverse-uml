@@ -28,18 +28,18 @@ var uml = '@startuml' +
     ' autoactivate on ';
 'participant participant as Usuario';
 var getAllFiles = function (dirPath, arrayOfFiles) {
-    loga('dir:', process.cwd() + dirPath);
+    loga(true, ['dir:', process.cwd() + dirPath]);
     var files = fs.readdirSync(process.cwd() + dirPath);
     arrayOfFiles = arrayOfFiles || [];
     files.forEach(function (file) {
-        loga('38:', process.cwd() + dirPath + "/" + file);
+        loga(false, [process.cwd() + dirPath + "/" + file]);
         if (fs.statSync(process.cwd() + dirPath + "/" + file).isDirectory()) {
             arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles);
         }
         else {
             // @ts-ignore
             if (file.endsWith('.ts')) {
-                loga('info:', process.cwd(), dirPath);
+                loga(false, ['info:', process.cwd(), dirPath]);
                 arrayOfFiles.push({
                     diretorio: path_1.join(process.cwd(), dirPath, "/"),
                     arquivo: file
@@ -50,23 +50,26 @@ var getAllFiles = function (dirPath, arrayOfFiles) {
     return arrayOfFiles;
 };
 var geraUmlSequenciaPorArquivo = function (arF) {
-    arF.forEach(function (arquivo) {
-        loga('Gerando PUML para ' + arquivo.diretorio + arquivo.arquivo);
+    for (var _i = 0, arF_1 = arF; _i < arF_1.length; _i++) {
+        var arquivo = arF_1[_i];
+        loga(false, ['Gerando PUML para ' + arquivo.diretorio + arquivo.arquivo]);
         var puml = new generateSequence_1["default"](arquivo);
-        console.log('novaEstrutura=', JSON.stringify(puml.novaEstrutura));
-        var arqpuml = new salvaPUML_1["default"](arquivo, puml.headers, puml.methods);
+        loga(false, ['novaEstrutura=', JSON.stringify(puml.novaEstrutura)]);
+        var arqpuml = new salvaPUML_1["default"](arquivo, puml.headers, puml.methods, puml.novaEstrutura);
         arqpuml.montaSequencia();
         arqpuml.salvaArquivo(tipouml_1.Tipouml.Sequencia);
-    });
-};
-var loga = function () {
-    var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
     }
-    // console.log(...args);
+};
+var loga = function (fg) {
+    if (fg === void 0) { fg = true; }
+    var args = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        args[_i - 1] = arguments[_i];
+    }
+    if (fg)
+        console.log.apply(console, args);
 };
 var listaArq = getAllFiles(diretorioArquivo, []);
-console.log('geraremos', listaArq);
+loga(false, ['geraremos', listaArq]);
 geraUmlSequenciaPorArquivo(listaArq);
 //console.log(listaArq)

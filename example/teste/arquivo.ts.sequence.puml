@@ -1,4 +1,2 @@
 @startuml 
- autoactivate on 
  participant participant as Usuario
-@enduml
