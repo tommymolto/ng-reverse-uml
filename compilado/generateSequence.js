@@ -125,7 +125,6 @@ var generateSequence = /** @class */ (function () {
                             chamadas: []
                         });
                     }
-                    console.log('HEYYY');
                 }
             }
         }
