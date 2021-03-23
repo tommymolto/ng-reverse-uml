@@ -62,19 +62,14 @@ var SalvaPUML = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        this.conteudo += '@startuml \r\n' +
-                            ' participant participant as Usuario\r\n';
-                        this.cabecalhos.forEach(function (cab) {
-                            _this.conteudo += cab.type + ' ' + cab.originalComponent + ' as ' + cab.aliasComponent + '\r\n';
-                        });
-                        return [4 /*yield*/, this.loopSequencia(this.estrutura)];
-                    case 1:
-                        _a.sent();
-                        this.conteudo += '@enduml';
-                        return [2 /*return*/];
-                }
+                this.conteudo += '@startuml \r\n' +
+                    ' participant participant as Usuario\r\n';
+                this.cabecalhos.forEach(function (cab) {
+                    _this.conteudo += cab.type + ' ' + cab.originalComponent + ' as ' + cab.aliasComponent + '\r\n';
+                });
+                this.loopSequencia(this.estrutura);
+                this.conteudo += '@enduml';
+                return [2 /*return*/];
             });
         });
     };
@@ -82,26 +77,22 @@ var SalvaPUML = /** @class */ (function () {
         if (caller === void 0) { caller = 'Usuario'; }
         if (indiceGlobal === void 0) { indiceGlobal = 0; }
         return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
+            var structGlobal1, _i, structGlobal1_1, x;
             return __generator(this, function (_a) {
-                this.helpers.loga(true, ['[indiceGlobal=' + indiceGlobal + ']',
+                this.helpers.loga(false, ['[indiceGlobal=' + indiceGlobal + ']',
                     JSON.stringify(structGlobal)]);
-                structGlobal === null || structGlobal === void 0 ? void 0 : structGlobal.forEach(function (x, indice, objeto) { return __awaiter(_this, void 0, void 0, function () {
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0:
-                                this.conteudo += caller + ' -> ' + x.componente + ':' + x.metodo + '\r\n';
-                                this.helpers.loga(true, ['[SAIDA]', caller + ' -> ' + x.componente + ':' + x.metodo + '\r\n']);
-                                this.conteudo += 'activate ' + x.componente + ' ' + this.cores[indiceGlobal] + '\r\n';
-                                this.helpers.loga(true, ['[SAIDA]', 'activate ' + x.componente + ' ' + this.cores[indiceGlobal] + '\r\n']);
-                                return [4 /*yield*/, this.validaChamadas(x, indiceGlobal)];
-                            case 1:
-                                _a.sent();
-                                this.conteudo += 'deactivate ' + x.componente + '\r\n';
-                                return [2 /*return*/];
-                        }
-                    });
-                }); });
+                structGlobal1 = structGlobal;
+                // @ts-ignore
+                for (_i = 0, structGlobal1_1 = structGlobal1; _i < structGlobal1_1.length; _i++) {
+                    x = structGlobal1_1[_i];
+                    this.conteudo += caller + ' -> ' + x.componente + ':' + x.metodo + '\r\n';
+                    this.helpers.loga(true, ['[SAIDA]', caller + ' -> ' + x.componente + ':' + x.metodo + '\r\n']);
+                    this.conteudo += 'activate ' + x.componente + ' ' + this.cores[indiceGlobal] + '\r\n';
+                    this.helpers.loga(true, ['[SAIDA]', 'activate ' + x.componente + ' ' + this.cores[indiceGlobal] + '\r\n']);
+                    this.validaChamadas(x, indiceGlobal);
+                    this.conteudo += 'deactivate ' + x.componente + '\r\n';
+                    this.helpers.loga(true, ['[SAIDA]', 'deactivate ' + x.componente + '\r\n']);
+                } //)
                 return [2 /*return*/];
             });
         });
@@ -110,29 +101,52 @@ var SalvaPUML = /** @class */ (function () {
         var _a;
         if (indiceGlobal === void 0) { indiceGlobal = 0; }
         return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
-            return __generator(this, function (_b) {
-                (_a = x.chamadas) === null || _a === void 0 ? void 0 : _a.forEach(function (y, indiceLocal) {
-                    var _a;
-                    _this.helpers.loga(true, ['Filtro de metodo = ', x.metodo]);
-                    var zz = ((_a = _this.estrutura) === null || _a === void 0 ? void 0 : _a.findIndex(function (k) { return k.metodo === y.metodo; })) || 0;
-                    _this.helpers.loga(true, ['Indice = ', zz]);
-                    // const z = structGlobal?.filter(k => k.metodo === x.metodo);
-                    if (zz && zz >= 0) {
-                        var t = [];
-                        var comp = _this.estrutura[zz].componente;
-                        t.push(_this.estrutura[zz]);
-                        _this.helpers.loga(true, ['Loop em  = ', t]);
-                        indiceGlobal++;
-                        _this.estrutura.splice(zz, 1);
-                        _this.loopSequencia(t, comp, indiceGlobal);
-                    }
-                    else {
-                        _this.conteudo += x.componente + ' -> ' + y.componente + ':' + y.metodo + '\r\n';
-                        _this.helpers.loga(true, ['[SemMetodo][SAIDA]', x.componente + ' -> ' + y.componente + ':' + y.metodo + '\r\n']);
-                    }
-                });
-                return [2 /*return*/];
+            var _loop_1, this_1, _i, _b, y;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _loop_1 = function (y) {
+                            var zz, t, comp;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        this_1.helpers.loga(true, ['Filtro de metodo = ', x.metodo]);
+                                        zz = ((_a = this_1.estrutura) === null || _a === void 0 ? void 0 : _a.findIndex(function (k) { return k.metodo === y.metodo; })) || 0;
+                                        this_1.helpers.loga(true, ['Indice = ', zz]);
+                                        if (!(zz && zz >= 0)) return [3 /*break*/, 2];
+                                        t = [];
+                                        comp = this_1.estrutura[zz].componente;
+                                        t.push(this_1.estrutura[zz]);
+                                        this_1.helpers.loga(true, ['Loop em  = ', t]);
+                                        indiceGlobal++;
+                                        this_1.estrutura.splice(zz, 1);
+                                        return [4 /*yield*/, this_1.loopSequencia(t, comp, indiceGlobal)];
+                                    case 1:
+                                        _a.sent();
+                                        return [3 /*break*/, 3];
+                                    case 2:
+                                        this_1.conteudo += x.componente + ' -> ' + y.componente + ':' + y.metodo + '\r\n';
+                                        this_1.helpers.loga(true, ['[SemMetodo][SAIDA]', x.componente + ' -> ' + y.componente + ':' + y.metodo + '\r\n']);
+                                        _a.label = 3;
+                                    case 3: return [2 /*return*/];
+                                }
+                            });
+                        };
+                        this_1 = this;
+                        _i = 0, _b = x.chamadas;
+                        _c.label = 1;
+                    case 1:
+                        if (!(_i < _b.length)) return [3 /*break*/, 4];
+                        y = _b[_i];
+                        return [5 /*yield**/, _loop_1(y)];
+                    case 2:
+                        _c.sent();
+                        _c.label = 3;
+                    case 3:
+                        _i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [2 /*return*/];
+                }
             });
         });
     };

@@ -9,8 +9,11 @@ ExtratoAnualComponent -> ExtratoAnualComponent:obterExtratoTarifas
 activate ExtratoAnualComponent #0055FF
 ExtratoAnualComponent -> clienteService:numeroContaSelecionado
 ExtratoAnualComponent -> extratoAnualService:carregarListaExtratoAnualTarifas
+deactivate ExtratoAnualComponent
+deactivate ExtratoAnualComponent
 Usuario -> ExtratoAnualComponent:downloadPdf
 activate ExtratoAnualComponent #005500
 ExtratoAnualComponent -> clienteService:numeroContaSelecionado
 ExtratoAnualComponent -> extratoAnualService:carregarPdfExtratoAnualTarifa
+deactivate ExtratoAnualComponent
 @enduml
