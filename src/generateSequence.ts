@@ -42,8 +42,8 @@ export default class generateSequence {
             this.exibe(x);
         })
         this.loga(false,['headers', this.headers]);
-        // this.loga(true,['methods', this.methods]);
-        this.loga(true,['novaEstrutura', this.novaEstrutura]);
+        // this.loga(false,['methods', this.methods]);
+        this.loga(false,['novaEstrutura', this.novaEstrutura]);
     }
 
 
@@ -107,11 +107,15 @@ export default class generateSequence {
             //    coloca referencia ao metodo local
             // senao (this.variavel)
             //  coloca referencia a variavel local
+
             if(paraJson['expression'] ){
+                this.loga(true,['PropertyAccessExpression', paraJson]);
+
                 if(paraJson['expression']['name'] ){
-                    this.loga(false,['[TEMOSALGOAQUI]',paraJson['name']['escapedText']]);
                     const finalCall = paraJson['name']['escapedText'];
+
                     if(hh.expression){
+
                         const pp = this.novaEstrutura.findIndex(x => x.componente === this.component && x.metodo === this.metodoAtual);
                         this.novaEstrutura[pp].chamadas.push({
                             componente: paraJson['expression']['name']['escapedText'],
@@ -119,9 +123,20 @@ export default class generateSequence {
                             chamadas: [] as Sequencia[]
                         } as Sequencia);
                         this.loga(false,['this.novaEstrutura[pp].chamadas=',this.novaEstrutura[pp].chamadas]);
-                        this.loga(false,[paraJson['expression']['name']['escapedText']])
+                        this.loga(false,['parajson', paraJson['expression']['name']['escapedText']])
                         const h4 : ts.PropertyAccessExpression = hh.expression  as ts.PropertyAccessExpression;
                         // this.loga(false,['[TEMOSALGOAQUI]',h4.getFullText(this.sc)]);
+                    }
+                }else if (paraJson['expression']['escapedText']){
+                    const temNewCall = this.headers.find(x => x.aliasComponent === paraJson['expression']['escapedText'])
+                    if(temNewCall?.aliasComponent){
+                        const pp = this.novaEstrutura.findIndex(x => x.componente === this.component && x.metodo === this.metodoAtual);
+                        const finalCall = paraJson['name']['escapedText'];
+                        this.novaEstrutura[pp].chamadas.push({
+                            componente: paraJson['expression']['escapedText'],
+                            metodo: finalCall,
+                            chamadas: [] as Sequencia[]
+                        } as Sequencia);
                     }
                 }
             }
@@ -146,10 +161,29 @@ export default class generateSequence {
                     })
                 }
             })
-
-
         }
+        /*if(ts.SyntaxKind[node.kind] === 'PropertyAccessExpression') {
+            const pae : ts.PropertyAccessExpression = node as ts.PropertyAccessExpression;
+            const metodoProperty = pae.name.escapedText.toString();
+            this.loga(false,['PropertyAccessExpression', pae.name.escapedText.toString()]);
 
+
+            node.forEachChild(fiote => {
+                if(ts.SyntaxKind[fiote.kind] === 'Identifier'){
+                    const pp = this.novaEstrutura.findIndex(x => x.componente === this.component
+                        && x.metodo === this.metodoAtual);
+                    this.loga(false,['Identifier', fiote]);
+                }
+            })
+            this.loga(false,['PropertyAccessExpression', pae.name.escapedText.toString()]);
+            /!*if(ts.SyntaxKind[pae['expression']] === 'Identifier' &&
+                ts.SyntaxKind[pae['name']] === 'Identifier'
+            ) {
+                this.loga(false,['PropertyAccessExpression', pae.expression.escapedText.toString()]);
+            }*!/
+
+
+        }*/
 
         // this.indent++;
         node.forEachChild(x => {

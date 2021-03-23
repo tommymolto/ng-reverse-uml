@@ -37,8 +37,8 @@ var generateSequence = /** @class */ (function () {
             _this.exibe(x);
         });
         this.loga(false, ['headers', this.headers]);
-        // this.loga(true,['methods', this.methods]);
-        this.loga(true, ['novaEstrutura', this.novaEstrutura]);
+        // this.loga(false,['methods', this.methods]);
+        this.loga(false, ['novaEstrutura', this.novaEstrutura]);
     }
     generateSequence.prototype.exibe = function (node) {
         var _this = this;
@@ -88,7 +88,7 @@ var generateSequence = /** @class */ (function () {
         }
         if (ts.SyntaxKind[node.kind] === 'ThisDeclaration' || ts.SyntaxKind[node.kind] === 'PropertyAccessExpression') {
             var hh = node;
-            var paraJson = JSON.parse(JSON.stringify(hh));
+            var paraJson_1 = JSON.parse(JSON.stringify(hh));
             var prop = hh.name.escapedText;
             // se tem 3 nivel de propriedade (this.variavel.metodo)
             //  se 2o nivel é um dos componentes com alias (variavel === componente)
@@ -97,22 +97,35 @@ var generateSequence = /** @class */ (function () {
             //    coloca referencia ao metodo local
             // senao (this.variavel)
             //  coloca referencia a variavel local
-            if (paraJson['expression']) {
-                if (paraJson['expression']['name']) {
-                    this.loga(false, ['[TEMOSALGOAQUI]', paraJson['name']['escapedText']]);
-                    var finalCall = paraJson['name']['escapedText'];
+            if (paraJson_1['expression']) {
+                this.loga(true, ['PropertyAccessExpression', paraJson_1]);
+                if (paraJson_1['expression']['name']) {
+                    var finalCall = paraJson_1['name']['escapedText'];
                     if (hh.expression) {
                         var pp = this.novaEstrutura.findIndex(function (x) { return x.componente === _this.component && x.metodo === _this.metodoAtual; });
                         this.novaEstrutura[pp].chamadas.push({
-                            componente: paraJson['expression']['name']['escapedText'],
+                            componente: paraJson_1['expression']['name']['escapedText'],
                             metodo: finalCall,
                             chamadas: []
                         });
                         this.loga(false, ['this.novaEstrutura[pp].chamadas=', this.novaEstrutura[pp].chamadas]);
-                        this.loga(false, [paraJson['expression']['name']['escapedText']]);
+                        this.loga(false, ['parajson', paraJson_1['expression']['name']['escapedText']]);
                         var h4 = hh.expression;
                         // this.loga(false,['[TEMOSALGOAQUI]',h4.getFullText(this.sc)]);
                     }
+                }
+                else if (paraJson_1['expression']['escapedText']) {
+                    var temNewCall = this.headers.find(function (x) { return x.aliasComponent === paraJson_1['expression']['escapedText']; });
+                    if (temNewCall === null || temNewCall === void 0 ? void 0 : temNewCall.aliasComponent) {
+                        var pp = this.novaEstrutura.findIndex(function (x) { return x.componente === _this.component && x.metodo === _this.metodoAtual; });
+                        var finalCall = paraJson_1['name']['escapedText'];
+                        this.novaEstrutura[pp].chamadas.push({
+                            componente: paraJson_1['expression']['escapedText'],
+                            metodo: finalCall,
+                            chamadas: []
+                        });
+                    }
+                    console.log('HEYYY');
                 }
             }
         }
@@ -136,6 +149,28 @@ var generateSequence = /** @class */ (function () {
                 }
             });
         }
+        /*if(ts.SyntaxKind[node.kind] === 'PropertyAccessExpression') {
+            const pae : ts.PropertyAccessExpression = node as ts.PropertyAccessExpression;
+            const metodoProperty = pae.name.escapedText.toString();
+            this.loga(false,['PropertyAccessExpression', pae.name.escapedText.toString()]);
+
+
+            node.forEachChild(fiote => {
+                if(ts.SyntaxKind[fiote.kind] === 'Identifier'){
+                    const pp = this.novaEstrutura.findIndex(x => x.componente === this.component
+                        && x.metodo === this.metodoAtual);
+                    this.loga(false,['Identifier', fiote]);
+                }
+            })
+            this.loga(false,['PropertyAccessExpression', pae.name.escapedText.toString()]);
+            /!*if(ts.SyntaxKind[pae['expression']] === 'Identifier' &&
+                ts.SyntaxKind[pae['name']] === 'Identifier'
+            ) {
+                this.loga(false,['PropertyAccessExpression', pae.expression.escapedText.toString()]);
+            }*!/
+
+
+        }*/
         // this.indent++;
         node.forEachChild(function (x) {
             _this.exibe(x);

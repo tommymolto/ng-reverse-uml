@@ -28,7 +28,7 @@ export default class SalvaPUML{
         this.conteudo += '@startuml \r\n' +
             ' participant participant as Usuario\r\n';
         this.cabecalhos.forEach((cab: Elemento) => {
-            this.conteudo += cab.type + ' ' + cab.originalComponent + ' as ' + cab.aliasComponent + '\r\n';
+            this.conteudo += cab.type + ' ' + cab.originalComponent + ' as ' + cab.aliasComponent + '<<'+ cab.aliasComponent+' >> \r\n';
         });
         this.loopSequencia(this.estrutura);
         this.conteudo += '@enduml';

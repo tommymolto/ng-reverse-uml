@@ -1,9 +1,9 @@
 @startuml 
  participant participant as Usuario
-actor  ExtratoAnualComponent as ExtratoAnualComponent
-boundary  IExtratoAnualTarifaService as extratoAnualService
-boundary  IClienteService as clienteService
-boundary  Date as dt
+actor  ExtratoAnualComponent as ExtratoAnualComponent<<ExtratoAnualComponent >> 
+boundary  IExtratoAnualTarifaService as extratoAnualService<<extratoAnualService >> 
+boundary  IClienteService as clienteService<<clienteService >> 
+boundary  Date as dt<<dt >> 
 Usuario -> ExtratoAnualComponent:ngOnInit
 activate ExtratoAnualComponent #005500
 ExtratoAnualComponent -> ExtratoAnualComponent:obterExtratoTarifas
@@ -16,5 +16,6 @@ Usuario -> ExtratoAnualComponent:downloadPdf
 activate ExtratoAnualComponent #005500
 ExtratoAnualComponent -> clienteService:numeroContaSelecionado
 ExtratoAnualComponent -> extratoAnualService:carregarPdfExtratoAnualTarifa
+ExtratoAnualComponent -> dt:getDate
 deactivate ExtratoAnualComponent
 @enduml
