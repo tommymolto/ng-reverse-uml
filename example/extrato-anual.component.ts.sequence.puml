@@ -3,6 +3,7 @@
 actor  ExtratoAnualComponent as ExtratoAnualComponent
 boundary  IExtratoAnualTarifaService as extratoAnualService
 boundary  IClienteService as clienteService
+boundary  Date as dt
 Usuario -> ExtratoAnualComponent:ngOnInit
 activate ExtratoAnualComponent #005500
 ExtratoAnualComponent -> ExtratoAnualComponent:obterExtratoTarifas

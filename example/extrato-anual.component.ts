@@ -46,6 +46,9 @@
       const downloadLink = document.createElement("a");
       const fileName = "extrato_anual_tarifa.pdf";
 
+      const dt = new Date();
+      dt.getDate();
+
       downloadLink.href = linkSource;
       downloadLink.download = fileName;
       downloadLink.click();

@@ -80,19 +80,10 @@ var generateSequence = /** @class */ (function () {
                 chamadas: []
             });
             if (this.componentMethods.includes(p)) {
-                //this.contagemMetodos++;
-                // @ts-ignore
-                this.methods.push(this.component + "->" + this.component + " " + this.cores[this.contagemMetodos] + ": " + p);
-                //this.metodo = this.component;
                 this.verificaChamadas(node, this.component);
-                //this.methods.push('deactivate '+ this.component);
-                // methods.push(component + '<-' + component + ' : ' + p);
             }
             else {
                 this.loga(false, ['SALCI', p]);
-                //console.log('SALCI',p);
-                // this.verificaChamadas(node, this.component);
-                this.methods.push(this.usuario + "->" + this.component + " " + this.cores[this.contagemMetodos] + ": " + p);
             }
         }
         if (ts.SyntaxKind[node.kind] === 'ThisDeclaration' || ts.SyntaxKind[node.kind] === 'PropertyAccessExpression') {
@@ -108,44 +99,42 @@ var generateSequence = /** @class */ (function () {
             //  coloca referencia a variavel local
             if (paraJson['expression']) {
                 if (paraJson['expression']['name']) {
-                    // console.log('[2TEMOSALGOAQUI]',paraJson['expression']);
-                    //console.log('[3TEMOSALGOAQUI]',hh.getFullText(sc));
-                    this.loga(false, ['[2TEMOSALGOAQUI]', paraJson['name']['escapedText']]);
+                    this.loga(false, ['[TEMOSALGOAQUI]', paraJson['name']['escapedText']]);
                     var finalCall = paraJson['name']['escapedText'];
                     if (hh.expression) {
                         var pp = this.novaEstrutura.findIndex(function (x) { return x.componente === _this.component && x.metodo === _this.metodoAtual; });
-                        /*console.log('indice',pp);
-                        console.log('add',{
-                            componente: paraJson['expression']['name']['escapedText'],
-                            metodo: finalCall
-                        });*/
                         this.novaEstrutura[pp].chamadas.push({
                             componente: paraJson['expression']['name']['escapedText'],
                             metodo: finalCall,
                             chamadas: []
                         });
                         this.loga(false, ['this.novaEstrutura[pp].chamadas=', this.novaEstrutura[pp].chamadas]);
-                        // console.log('this.novaEstrutura[pp].chamadas=',this.novaEstrutura[pp].chamadas);
-                        // @ts-ignore
-                        this.methods.push(this.component + "->" + paraJson['expression']['name']['escapedText'] + " : " + finalCall);
                         this.loga(false, [paraJson['expression']['name']['escapedText']]);
                         var h4 = hh.expression;
-                        this.loga(false, ['[4TEMOSALGOAQUI]', h4.getFullText(this.sc)]);
+                        // this.loga(false,['[TEMOSALGOAQUI]',h4.getFullText(this.sc)]);
                     }
-                    else {
-                        // console.log('ERRO', finalCall)
-                    }
-                    /*const isComponent = this.headers.find( x => x.aliasComponent === prop);
-                    if (isComponent){
-                        this.loga(false,['FOUND=',prop]);
-                        const xpFilho = JSON.parse(JSON.stringify(hh))
-                        if (xpFilho) this.loga(false, ['[EXCFILHO]' + prop + '=>', JSON.stringify(xpFilho)]);
-                    }else{
-                        this.loga(false, ['SALCI FUFUs']);
-
-                    }*/
                 }
             }
+        }
+        if (ts.SyntaxKind[node.kind] === 'VariableDeclaration') {
+            var lcd_1 = node;
+            node.forEachChild(function (fiote) {
+                if (ts.SyntaxKind[fiote.kind] === 'NewExpression') {
+                    var b = lcd_1.name;
+                    var nomeAmigavel = b.escapedText.toString();
+                    var paragua = fiote;
+                    var prop = paragua.expression;
+                    var c = '';
+                    if (prop && prop.escapedText) {
+                        c = prop.escapedText.toString();
+                    }
+                    _this.headers.push({
+                        type: 'boundary ',
+                        originalComponent: c,
+                        aliasComponent: nomeAmigavel
+                    });
+                }
+            });
         }
         // this.indent++;
         node.forEachChild(function (x) {
@@ -158,22 +147,20 @@ var generateSequence = /** @class */ (function () {
         this.loga(false, ['verificaChamadas', metodo]);
         //console.log('verificaChamadas',  metodo);
         ts.forEachChild(no, function (noFilho) {
+            var _a, _b;
             if (ts.SyntaxKind[noFilho.kind] === 'PropertyAccessExpression') {
                 _this.loga(false, ['cheguei no ', metodo]);
                 var hh = noFilho;
                 var prop = hh.name.escapedText;
                 var pp = _this.novaEstrutura.findIndex(function (x) { return x.componente === _this.component && x.metodo === _this.metodoAtual; });
-                _this.novaEstrutura[pp].chamadas.push({
+                (_b = (_a = _this.novaEstrutura[pp]) === null || _a === void 0 ? void 0 : _a.chamadas) === null || _b === void 0 ? void 0 : _b.push({
                     componente: metodo,
                     metodo: prop,
                     chamadas: []
                 });
-                // @ts-ignore
-                _this.methods.push(metodo + '->' + metodo + ' : ' + hh.name.escapedText);
             }
             _this.verificaChamadas(noFilho, metodo, indice);
         });
-        // if (indice > 0) this.methods.push('deactivate '+ metodo);
     };
     generateSequence.prototype.loga = function (fg) {
         if (fg === void 0) { fg = true; }
