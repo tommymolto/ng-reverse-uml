@@ -3,8 +3,12 @@
   "version": "0.0.1",
   "description": "Generate UML sequence and activity from angular 4+ source code",
   "main": "index.js",
+  "bin": {
+    "ngreverseuml": "./bin/index-cli.js"
+  },
   "scripts": {
-    "test": "clear && tsc src/*.ts --outDir ./compilado  && node ./compilado/index.js example/extrato-anual.component.ts",
+    "build": "rollup -c rollup/rollup.config.js",
+    "test": "clear && tsc src/*.ts --outDir ./compilado  && node ./compilado/index.js -s'example/extrato-anual.component.ts'",
     "beta:test": "tsc src/index.ts && node index.js example/extrato-anual.component.ts"
   },
   "repository": {
@@ -16,8 +20,13 @@
   "devDependencies": {
     "@angular/core": "^11.1.2",
     "@types/node": "^14.14.25",
+    "commander": "^7.2.0",
     "fs": "0.0.1-security",
     "path": "^0.12.7",
+    "rollup": "^2.44.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "rollup-watch": "^4.3.1",
     "rxjs": "^6.6.3",
     "ts-simple-ast": "^21.0.4",
     "typescript": "^4.1.3"

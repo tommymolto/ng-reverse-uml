@@ -26,24 +26,26 @@ export default class generateSequence {
     nomeArquivo =  '';
     public novaEstrutura: Sequencia[] = [];
     public metodoAtual = '';
+    public debuga: boolean = false;
 
+    constructor(arq: Arquivo, loga:boolean = false){
+        this.debuga = loga ? true : false;
 
-    constructor(arq: Arquivo){
         this.diretorioArquivo = arq.diretorio;
         this.nomeArquivo = this.diretorioArquivo + arq.arquivo;
         const file = process.cwd() + this.nomeArquivo;
-        this.loga(false, ['file: ',this.nomeArquivo] );
+        this.loga(this.debuga, ['file: ',this.nomeArquivo] );
         this.program = ts.createProgram([this.nomeArquivo], { allowJs: true });
         this.sc = this.program.getSourceFile( this.nomeArquivo );
-        this.loga(false,['lendo ', this.sc]);
+        this.loga(this.debuga,['lendo ', this.sc]);
         // @ts-ignore
         ts.forEachChild(this.sc, x => {
             // console.log(x);
             this.exibe(x);
         })
-        this.loga(false,['headers', this.headers]);
+        this.loga(this.debuga,['headers', this.headers]);
         // this.loga(false,['methods', this.methods]);
-        this.loga(false,['novaEstrutura', this.novaEstrutura]);
+        this.loga(this.debuga,['novaEstrutura', this.novaEstrutura]);
     }
 
 
@@ -79,7 +81,7 @@ export default class generateSequence {
             const l = JSON.parse(JSON.stringify(node));
             const xx: ts.MethodDeclaration = node as ts.MethodDeclaration;
             const p = l.name.escapedText;
-            this.loga(false,['l.name.escapedText=',l.name.escapedText]);
+            this.loga(this.debuga,['l.name.escapedText=',l.name.escapedText]);
             const tt = this.headers.find(x => x.originalComponent === this.component);
             this.metodoAtual = p;
 
@@ -91,7 +93,7 @@ export default class generateSequence {
             if (this.componentMethods.includes(p)) {
                 this.verificaChamadas(node, this.component);
             }else{
-                this.loga(false,['SALCI',p]);
+                this.loga(this.debuga,['SALCI',p]);
 
             }
 
@@ -109,7 +111,7 @@ export default class generateSequence {
             //  coloca referencia a variavel local
 
             if(paraJson['expression'] ){
-                this.loga(true,['PropertyAccessExpression', paraJson]);
+                this.loga(this.debuga,['PropertyAccessExpression', paraJson]);
 
                 if(paraJson['expression']['name'] ){
                     const finalCall = paraJson['name']['escapedText'];
@@ -122,8 +124,8 @@ export default class generateSequence {
                             metodo: finalCall,
                             chamadas: [] as Sequencia[]
                         } as Sequencia);
-                        this.loga(false,['this.novaEstrutura[pp].chamadas=',this.novaEstrutura[pp].chamadas]);
-                        this.loga(false,['parajson', paraJson['expression']['name']['escapedText']])
+                        this.loga(this.debuga,['this.novaEstrutura[pp].chamadas=',this.novaEstrutura[pp].chamadas]);
+                        this.loga(this.debuga,['parajson', paraJson['expression']['name']['escapedText']])
                         const h4 : ts.PropertyAccessExpression = hh.expression  as ts.PropertyAccessExpression;
                         // this.loga(false,['[TEMOSALGOAQUI]',h4.getFullText(this.sc)]);
                     }
@@ -192,7 +194,7 @@ export default class generateSequence {
 
     }
     verificaChamadas(no: ts.Node, metodo: string, indice: number = 0) {
-        this.loga(false,['verificaChamadas', metodo]);
+        this.loga(this.debuga,['verificaChamadas', metodo]);
         //console.log('verificaChamadas',  metodo);
         ts.forEachChild(no, noFilho => {
             if (ts.SyntaxKind[noFilho.kind] === 'PropertyAccessExpression') {

@@ -1,0 +1,21 @@
+@startuml 
+ participant participant as Usuario
+actor  ExtratoAnualComponent as ExtratoAnualComponent<<ExtratoAnualComponent >> 
+boundary  IExtratoAnualTarifaService as extratoAnualService<<extratoAnualService >> 
+boundary  IClienteService as clienteService<<clienteService >> 
+boundary  Date as dt<<dt >> 
+Usuario -> ExtratoAnualComponent:ngOnInit
+activate ExtratoAnualComponent #005500
+ExtratoAnualComponent -> ExtratoAnualComponent:obterExtratoTarifas
+activate ExtratoAnualComponent #0055FF
+ExtratoAnualComponent -> clienteService:numeroContaSelecionado
+ExtratoAnualComponent -> extratoAnualService:carregarListaExtratoAnualTarifas
+deactivate ExtratoAnualComponent
+deactivate ExtratoAnualComponent
+Usuario -> ExtratoAnualComponent:downloadPdf
+activate ExtratoAnualComponent #005500
+ExtratoAnualComponent -> clienteService:numeroContaSelecionado
+ExtratoAnualComponent -> extratoAnualService:carregarPdfExtratoAnualTarifa
+ExtratoAnualComponent -> dt:getDate
+deactivate ExtratoAnualComponent
+@enduml
