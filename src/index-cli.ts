@@ -23,7 +23,7 @@ export class CliApplication extends Application {
 
         program
             .version(pkg.version)
-            .usage('<src> [options]')
+            .usage('-s <src> [options]')
             .option('-s, --sourcedir [dir]', 'Source code dir')
             .option('-d, --debug', 'display some debugging')
             .helpOption('-h, --HELP', 'read more information')

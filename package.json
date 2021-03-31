@@ -1,8 +1,8 @@
 {
   "name": "ng-reverse-uml",
-  "version": "0.0.1",
+  "version": "0.1.2",
   "description": "Generate UML sequence and activity from angular 4+ source code",
-  "main": "index.js",
+  "main": "dist/index.js",
   "bin": {
     "ngreverseuml": "./bin/index-cli.js"
   },

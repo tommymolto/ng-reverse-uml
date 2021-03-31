@@ -39,9 +39,10 @@ export class Application {
     }
     inicia(fonte: string, loga: string){
         this.debuga = loga ? true : false;
-        console.log('oi eu sou a apps', fonte);
-        console.log('oi eu sou a apps', loga);
-        this.listaArq = this.getAllFiles(diretorioArquivo, []);
+        const dir = '/' + fonte;
+        console.log('vamos em ' + dir);
+        // process.exit();
+        this.listaArq = this.getAllFiles(dir, []);
         helpers.loga(false, ['geraremos', this.listaArq]);
         this.geraUmlSequenciaPorArquivo(this.listaArq);
     }
