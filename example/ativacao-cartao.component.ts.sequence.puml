@@ -1,0 +1,81 @@
+@startuml 
+ participant participant as Usuario
+actor  AtivacaoCartaoComponent as AtivacaoCartaoComponent<<AtivacaoCartaoComponent >> 
+boundary  IAtivacaoCartaoService as service<<service >> 
+boundary  IModaisHomeService as modalService<<modalService >> 
+boundary  INativeHomeService as nativeService<<nativeService >> 
+boundary  Router as router<<router >> 
+boundary  CsfCabecalhoService as header<<header >> 
+boundary  CsfSnackbarService as snackbarService<<snackbarService >> 
+boundary  Location as location<<location >> 
+Usuario -> AtivacaoCartaoComponent:ngOnInit
+activate AtivacaoCartaoComponent #005500
+deactivate AtivacaoCartaoComponent
+Usuario -> AtivacaoCartaoComponent:ngOnDestroy
+activate AtivacaoCartaoComponent #005500
+AtivacaoCartaoComponent -> modalService:resetaModal
+deactivate AtivacaoCartaoComponent
+Usuario -> AtivacaoCartaoComponent:senhaFoiDigitada
+activate AtivacaoCartaoComponent #005500
+AtivacaoCartaoComponent -> service:realizarAtivacaoCartao
+AtivacaoCartaoComponent -> modalService:exibeModal
+deactivate AtivacaoCartaoComponent
+Usuario -> AtivacaoCartaoComponent:exibirErroAtivacaoCartao
+activate AtivacaoCartaoComponent #005500
+AtivacaoCartaoComponent -> modalService:exibeModal
+AtivacaoCartaoComponent -> snackbarService:push
+deactivate AtivacaoCartaoComponent
+Usuario -> AtivacaoCartaoComponent:esqueciSenha
+activate AtivacaoCartaoComponent #005500
+AtivacaoCartaoComponent -> modalService:exibeModal
+deactivate AtivacaoCartaoComponent
+Usuario -> AtivacaoCartaoComponent:fecharModal
+activate AtivacaoCartaoComponent #005500
+AtivacaoCartaoComponent -> modalService:resetaModal
+deactivate AtivacaoCartaoComponent
+Usuario -> AtivacaoCartaoComponent:continuarModal
+activate AtivacaoCartaoComponent #005500
+AtivacaoCartaoComponent -> router:navigate
+deactivate AtivacaoCartaoComponent
+Usuario -> AtivacaoCartaoComponent:exibeMensagemErro
+activate AtivacaoCartaoComponent #005500
+AtivacaoCartaoComponent -> snackbarService:push
+deactivate AtivacaoCartaoComponent
+Usuario -> AtivacaoCartaoComponent:mostraTecladoVirtual
+activate AtivacaoCartaoComponent #005500
+AtivacaoCartaoComponent -> titulo:nativeElement
+AtivacaoCartaoComponent -> style:cssText
+AtivacaoCartaoComponent -> conteudo:nativeElement
+AtivacaoCartaoComponent -> style:cssText
+AtivacaoCartaoComponent -> tecladoVirtual:nativeElement
+AtivacaoCartaoComponent -> style:cssText
+deactivate AtivacaoCartaoComponent
+Usuario -> AtivacaoCartaoComponent:mostraMensagemErroSenha
+activate AtivacaoCartaoComponent #005500
+AtivacaoCartaoComponent -> erroPin:nativeElement
+AtivacaoCartaoComponent -> style:cssText
+deactivate AtivacaoCartaoComponent
+Usuario -> AtivacaoCartaoComponent:ocultaMensagemErroSenha
+activate AtivacaoCartaoComponent #005500
+AtivacaoCartaoComponent -> erroPin:nativeElement
+AtivacaoCartaoComponent -> style:cssText
+AtivacaoCartaoComponent -> service:cartao
+AtivacaoCartaoComponent -> numero:substring
+AtivacaoCartaoComponent -> cartao:numero
+AtivacaoCartaoComponent -> numero:length
+AtivacaoCartaoComponent -> cartao:numero
+deactivate AtivacaoCartaoComponent
+Usuario -> AtivacaoCartaoComponent:obterHardwareFingerprint
+activate AtivacaoCartaoComponent #005500
+AtivacaoCartaoComponent -> hardwareFingerprint:toPromise
+AtivacaoCartaoComponent -> nativeService:hardwareFingerprint
+deactivate AtivacaoCartaoComponent
+Usuario -> AtivacaoCartaoComponent:inputAlterado
+activate AtivacaoCartaoComponent #005500
+deactivate AtivacaoCartaoComponent
+Usuario -> AtivacaoCartaoComponent:onVoltar
+activate AtivacaoCartaoComponent #005500
+AtivacaoCartaoComponent -> location:back
+AtivacaoCartaoComponent -> service:empresa
+deactivate AtivacaoCartaoComponent
+@enduml

@@ -24,9 +24,9 @@ export default class generateSequence {
         ' participant participant as Usuario';
     diretorioArquivo = '';
     nomeArquivo =  '';
-    public novaEstrutura: Sequencia[] = [];
-    public metodoAtual = '';
-    public debuga: boolean = false;
+    private novaEstrutura: Sequencia[] = [];
+    private metodoAtual = '';
+    private debuga: boolean = false;
 
     constructor(arq: Arquivo, loga:boolean = false){
         this.debuga = loga ? true : false;
@@ -119,13 +119,25 @@ export default class generateSequence {
                     if(hh.expression){
 
                         const pp = this.novaEstrutura.findIndex(x => x.componente === this.component && x.metodo === this.metodoAtual);
-                        this.novaEstrutura[pp].chamadas.push({
+                        this.loga(this.debuga,['is this it?',pp]);
+                        this.loga(this.debuga,['this.novaEstrutura['+ pp +' ].chamadas=',{
                             componente: paraJson['expression']['name']['escapedText'],
                             metodo: finalCall,
                             chamadas: [] as Sequencia[]
-                        } as Sequencia);
-                        this.loga(this.debuga,['this.novaEstrutura[pp].chamadas=',this.novaEstrutura[pp].chamadas]);
-                        this.loga(this.debuga,['parajson', paraJson['expression']['name']['escapedText']])
+                        }]);
+                        try{
+                            this.novaEstrutura[pp].chamadas.push({
+                                componente: paraJson['expression']['name']['escapedText'],
+                                metodo: finalCall,
+                                chamadas: [] as Sequencia[]
+                            } as Sequencia);
+                            this.loga(this.debuga,['this.novaEstrutura[pp].chamadas=',this.novaEstrutura[pp].chamadas]);
+                            this.loga(this.debuga,['parajson', paraJson['expression']['name']['escapedText']])
+
+                        }catch (e) {
+                            console.log('[ERROR]', e)
+                        }
+
                         const h4 : ts.PropertyAccessExpression = hh.expression  as ts.PropertyAccessExpression;
                         // this.loga(false,['[TEMOSALGOAQUI]',h4.getFullText(this.sc)]);
                     }
@@ -134,11 +146,17 @@ export default class generateSequence {
                     if(temNewCall?.aliasComponent){
                         const pp = this.novaEstrutura.findIndex(x => x.componente === this.component && x.metodo === this.metodoAtual);
                         const finalCall = paraJson['name']['escapedText'];
-                        this.novaEstrutura[pp].chamadas.push({
-                            componente: paraJson['expression']['escapedText'],
-                            metodo: finalCall,
-                            chamadas: [] as Sequencia[]
-                        } as Sequencia);
+                        try{
+                            this.novaEstrutura[pp].chamadas.push({
+                                componente: paraJson['expression']['escapedText'],
+                                metodo: finalCall,
+                                chamadas: [] as Sequencia[]
+                            } as Sequencia);
+                        }catch (e) {
+                            console.log('[ERROR]', e)
+
+                        }
+
                     }
                 }
             }
@@ -202,11 +220,16 @@ export default class generateSequence {
                 const hh : ts.PropertyAccessExpression = noFilho as ts.PropertyAccessExpression;
                 const prop = hh.name.escapedText;
                 const pp = this.novaEstrutura.findIndex(x => x.componente === this.component && x.metodo === this.metodoAtual);
-                this.novaEstrutura[pp]?.chamadas?.push({
-                    componente: metodo,
-                    metodo: prop,
-                    chamadas: [] as Sequencia[]
-                } as Sequencia);
+                try{
+                    this.novaEstrutura[pp]?.chamadas?.push({
+                        componente: metodo,
+                        metodo: prop,
+                        chamadas: [] as Sequencia[]
+                    } as Sequencia);
+                }catch (e) {
+                    console.error('[ERROR]',e)
+                }
+
 
             }
 

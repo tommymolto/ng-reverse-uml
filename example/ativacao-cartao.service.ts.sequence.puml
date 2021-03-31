@@ -1,0 +1,18 @@
+@startuml 
+ participant participant as Usuario
+actor  AtivacaoCartaoService as AtivacaoCartaoService<<AtivacaoCartaoService >> 
+boundary  IClienteService as clienteService<<clienteService >> 
+boundary  IConfiguracaoService as configService<<configService >> 
+boundary  ILibapiService as apiService<<apiService >> 
+Usuario -> AtivacaoCartaoService:realizarAtivacaoCartao
+activate AtivacaoCartaoService #005500
+AtivacaoCartaoService -> apiService:leChaveAmbiente
+AtivacaoCartaoService -> clienteService:numeroContaSelecionado
+AtivacaoCartaoService -> apiService:post
+deactivate AtivacaoCartaoService
+Usuario -> AtivacaoCartaoService:gerarBodyAtivacaoCartao
+activate AtivacaoCartaoService #005500
+AtivacaoCartaoService -> clienteService:cartaoPrimario
+AtivacaoCartaoService -> configService:isAppCarrefour
+deactivate AtivacaoCartaoService
+@enduml
