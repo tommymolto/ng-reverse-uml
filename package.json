@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "rollup -c rollup/rollup.config.js",
-    "test": "clear && tsc src/*.ts --outDir ./compilado  && node ./compilado/index.js -s'example/extrato-anual.component.ts'",
+    "test": "clear && tsc src/*.ts -t es5 --outDir ./compilado  && node ./compilado/index.js -s'example/extrato-anual.component.ts'",
     "beta:test": "tsc src/index.ts && node index.js example/extrato-anual.component.ts"
   },
   "repository": {

@@ -16,19 +16,21 @@ export default class SalvaPUML{
     public cores = ['#005500','#0055FF','#0055F0','#00FF00','#0055F0'];
     public helpers: Helpers;
     public debuga: boolean = false;
-
+    public astSource: string = '';
     constructor(arquivo: Arquivo,
                 cabecalhos: Elemento[] = [],
                 metodos: string[] = [],
                 estrutura: Sequencia[] = [] as Sequencia[],
-                loga: boolean = false) {
+                loga: boolean = false,
+                astSource: string = '') {
         this.debuga = loga ? true : false;
 
         this.arquivo = arquivo;
         this.cabecalhos = cabecalhos;
         this.metodos = metodos;
         this.estrutura = estrutura;
-        // console.log('nova=>', this.estrutura);
+        this.astSource = astSource !== '' ? astSource : '';
+        console.log('nova=>', astSource);
         this.helpers = new Helpers();
     }
      async montaSequencia() {
@@ -88,6 +90,14 @@ export default class SalvaPUML{
         this.helpers.loga(this.debuga, ['conteudo=',this.conteudo]);
         const f = this.arquivo.diretorio + this.arquivo.arquivo + '.' + tipoUML + '.puml';
         fs.writeFile(f, this.conteudo,  (err) => {
+            if (err) return console.log(err);
+            console.log('Generating > ', f );
+        })
+    }
+    salvaAST(tipoUML = Tipouml.AST){
+        this.helpers.loga(this.debuga, ['conteudo=',this.conteudo]);
+        const f = this.arquivo.diretorio + '.' + this.arquivo.arquivo + '.' + tipoUML ;
+        fs.writeFile(f, this.astSource,  (err) => {
             if (err) return console.log(err);
             console.log('Generating > ', f );
         })

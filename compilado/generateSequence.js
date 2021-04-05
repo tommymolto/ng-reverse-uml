@@ -1,13 +1,14 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var path_1 = require("path");
 // import { WorkspaceSymbols } from 'ngast';
 var ts = require("typescript");
 var fs = require('fs');
 var config = path_1.join(process.cwd(), 'tsconfig.json');
 var generateSequence = /** @class */ (function () {
-    function generateSequence(arq) {
+    function generateSequence(arq, loga) {
         var _this = this;
+        if (loga === void 0) { loga = false; }
         // public indent: number = 0;
         this.usuario = 'Usuario';
         this.component = '';
@@ -24,21 +25,25 @@ var generateSequence = /** @class */ (function () {
         this.nomeArquivo = '';
         this.novaEstrutura = [];
         this.metodoAtual = '';
+        this.debuga = false;
+        this.debuga = loga ? true : false;
         this.diretorioArquivo = arq.diretorio;
         this.nomeArquivo = this.diretorioArquivo + arq.arquivo;
         var file = process.cwd() + this.nomeArquivo;
-        this.loga(false, ['file: ', this.nomeArquivo]);
+        this.loga(this.debuga, ['file: ', this.nomeArquivo]);
         this.program = ts.createProgram([this.nomeArquivo], { allowJs: true });
         this.sc = this.program.getSourceFile(this.nomeArquivo);
-        this.loga(false, ['lendo ', this.sc]);
+        var printer = ts.createPrinter();
+        console.log(printer.printFile(this.sc));
+        this.loga(this.debuga, ['lendo ', this.sc]);
         // @ts-ignore
         ts.forEachChild(this.sc, function (x) {
             // console.log(x);
             _this.exibe(x);
         });
-        this.loga(false, ['headers', this.headers]);
+        this.loga(this.debuga, ['headers', this.headers]);
         // this.loga(false,['methods', this.methods]);
-        this.loga(false, ['novaEstrutura', this.novaEstrutura]);
+        this.loga(this.debuga, ['novaEstrutura', this.novaEstrutura]);
     }
     generateSequence.prototype.exibe = function (node) {
         var _this = this;
@@ -71,7 +76,7 @@ var generateSequence = /** @class */ (function () {
             var l = JSON.parse(JSON.stringify(node));
             var xx = node;
             var p = l.name.escapedText;
-            this.loga(false, ['l.name.escapedText=', l.name.escapedText]);
+            this.loga(this.debuga, ['l.name.escapedText=', l.name.escapedText]);
             var tt = this.headers.find(function (x) { return x.originalComponent === _this.component; });
             this.metodoAtual = p;
             this.novaEstrutura.push({
@@ -83,7 +88,7 @@ var generateSequence = /** @class */ (function () {
                 this.verificaChamadas(node, this.component);
             }
             else {
-                this.loga(false, ['SALCI', p]);
+                this.loga(this.debuga, ['SALCI', p]);
             }
         }
         if (ts.SyntaxKind[node.kind] === 'ThisDeclaration' || ts.SyntaxKind[node.kind] === 'PropertyAccessExpression') {
@@ -98,18 +103,29 @@ var generateSequence = /** @class */ (function () {
             // senao (this.variavel)
             //  coloca referencia a variavel local
             if (paraJson_1['expression']) {
-                this.loga(true, ['PropertyAccessExpression', paraJson_1]);
+                this.loga(this.debuga, ['PropertyAccessExpression', paraJson_1]);
                 if (paraJson_1['expression']['name']) {
                     var finalCall = paraJson_1['name']['escapedText'];
                     if (hh.expression) {
                         var pp = this.novaEstrutura.findIndex(function (x) { return x.componente === _this.component && x.metodo === _this.metodoAtual; });
-                        this.novaEstrutura[pp].chamadas.push({
-                            componente: paraJson_1['expression']['name']['escapedText'],
-                            metodo: finalCall,
-                            chamadas: []
-                        });
-                        this.loga(false, ['this.novaEstrutura[pp].chamadas=', this.novaEstrutura[pp].chamadas]);
-                        this.loga(false, ['parajson', paraJson_1['expression']['name']['escapedText']]);
+                        this.loga(this.debuga, ['is this it?', pp]);
+                        this.loga(this.debuga, ['this.novaEstrutura[' + pp + ' ].chamadas=', {
+                                componente: paraJson_1['expression']['name']['escapedText'],
+                                metodo: finalCall,
+                                chamadas: []
+                            }]);
+                        try {
+                            this.novaEstrutura[pp].chamadas.push({
+                                componente: paraJson_1['expression']['name']['escapedText'],
+                                metodo: finalCall,
+                                chamadas: []
+                            });
+                            this.loga(this.debuga, ['this.novaEstrutura[pp].chamadas=', this.novaEstrutura[pp].chamadas]);
+                            this.loga(this.debuga, ['parajson', paraJson_1['expression']['name']['escapedText']]);
+                        }
+                        catch (e) {
+                            console.log('[ERROR]', e);
+                        }
                         var h4 = hh.expression;
                         // this.loga(false,['[TEMOSALGOAQUI]',h4.getFullText(this.sc)]);
                     }
@@ -119,11 +135,16 @@ var generateSequence = /** @class */ (function () {
                     if (temNewCall === null || temNewCall === void 0 ? void 0 : temNewCall.aliasComponent) {
                         var pp = this.novaEstrutura.findIndex(function (x) { return x.componente === _this.component && x.metodo === _this.metodoAtual; });
                         var finalCall = paraJson_1['name']['escapedText'];
-                        this.novaEstrutura[pp].chamadas.push({
-                            componente: paraJson_1['expression']['escapedText'],
-                            metodo: finalCall,
-                            chamadas: []
-                        });
+                        try {
+                            this.novaEstrutura[pp].chamadas.push({
+                                componente: paraJson_1['expression']['escapedText'],
+                                metodo: finalCall,
+                                chamadas: []
+                            });
+                        }
+                        catch (e) {
+                            console.log('[ERROR]', e);
+                        }
                     }
                 }
             }
@@ -178,7 +199,7 @@ var generateSequence = /** @class */ (function () {
     generateSequence.prototype.verificaChamadas = function (no, metodo, indice) {
         var _this = this;
         if (indice === void 0) { indice = 0; }
-        this.loga(false, ['verificaChamadas', metodo]);
+        this.loga(this.debuga, ['verificaChamadas', metodo]);
         //console.log('verificaChamadas',  metodo);
         ts.forEachChild(no, function (noFilho) {
             var _a, _b;
@@ -187,11 +208,16 @@ var generateSequence = /** @class */ (function () {
                 var hh = noFilho;
                 var prop = hh.name.escapedText;
                 var pp = _this.novaEstrutura.findIndex(function (x) { return x.componente === _this.component && x.metodo === _this.metodoAtual; });
-                (_b = (_a = _this.novaEstrutura[pp]) === null || _a === void 0 ? void 0 : _a.chamadas) === null || _b === void 0 ? void 0 : _b.push({
-                    componente: metodo,
-                    metodo: prop,
-                    chamadas: []
-                });
+                try {
+                    (_b = (_a = _this.novaEstrutura[pp]) === null || _a === void 0 ? void 0 : _a.chamadas) === null || _b === void 0 ? void 0 : _b.push({
+                        componente: metodo,
+                        metodo: prop,
+                        chamadas: []
+                    });
+                }
+                catch (e) {
+                    console.error('[ERROR]', e);
+                }
             }
             _this.verificaChamadas(noFilho, metodo, indice);
         });
@@ -207,4 +233,4 @@ var generateSequence = /** @class */ (function () {
     };
     return generateSequence;
 }());
-exports["default"] = generateSequence;
+exports.default = generateSequence;

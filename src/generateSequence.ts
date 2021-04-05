@@ -1,10 +1,12 @@
-import { join } from 'path';
+import {join} from 'path';
 // import { WorkspaceSymbols } from 'ngast';
 import * as ts from 'typescript';
-const fs = require('fs');
-import  Elemento from './models/Elemento';
+import {EmitHint} from 'typescript';
+import Elemento from './models/Elemento';
 import Arquivo from "./models/Arquivo";
 import Sequencia from "./models/Sequencia";
+
+const fs = require('fs');
 const config = join(process.cwd(), 'tsconfig.json');
 
 export default class generateSequence {
@@ -24,9 +26,10 @@ export default class generateSequence {
         ' participant participant as Usuario';
     diretorioArquivo = '';
     nomeArquivo =  '';
-    private novaEstrutura: Sequencia[] = [];
-    private metodoAtual = '';
-    private debuga: boolean = false;
+    public novaEstrutura: Sequencia[] = [];
+    public metodoAtual = '';
+    public debuga: boolean = false;
+    public astSource: string = '';
 
     constructor(arq: Arquivo, loga:boolean = false){
         this.debuga = loga ? true : false;
@@ -37,6 +40,7 @@ export default class generateSequence {
         this.loga(this.debuga, ['file: ',this.nomeArquivo] );
         this.program = ts.createProgram([this.nomeArquivo], { allowJs: true });
         this.sc = this.program.getSourceFile( this.nomeArquivo );
+        this.astSource = JSON.stringify(this.sc);
         this.loga(this.debuga,['lendo ', this.sc]);
         // @ts-ignore
         ts.forEachChild(this.sc, x => {

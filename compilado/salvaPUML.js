@@ -35,15 +35,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var tipouml_1 = require("./models/tipouml");
 var helpers_1 = require("./utils/helpers");
 var fs = require('fs');
 var SalvaPUML = /** @class */ (function () {
-    function SalvaPUML(arquivo, cabecalhos, metodos, estrutura) {
+    function SalvaPUML(arquivo, cabecalhos, metodos, estrutura, loga) {
         if (cabecalhos === void 0) { cabecalhos = []; }
         if (metodos === void 0) { metodos = []; }
         if (estrutura === void 0) { estrutura = []; }
+        if (loga === void 0) { loga = false; }
         this.cabecalhos = [];
         this.metodos = [];
         this.conteudo = '';
@@ -51,12 +52,14 @@ var SalvaPUML = /** @class */ (function () {
         this.metodoAtual = '';
         this.componentetual = '';
         this.cores = ['#005500', '#0055FF', '#0055F0', '#00FF00', '#0055F0'];
+        this.debuga = false;
+        this.debuga = loga ? true : false;
         this.arquivo = arquivo;
         this.cabecalhos = cabecalhos;
         this.metodos = metodos;
         this.estrutura = estrutura;
         // console.log('nova=>', this.estrutura);
-        this.helpers = new helpers_1["default"]();
+        this.helpers = new helpers_1.default();
     }
     SalvaPUML.prototype.montaSequencia = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -79,19 +82,19 @@ var SalvaPUML = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var structGlobal1, _i, structGlobal1_1, x;
             return __generator(this, function (_a) {
-                this.helpers.loga(false, ['[indiceGlobal=' + indiceGlobal + ']',
+                this.helpers.loga(this.debuga, ['[indiceGlobal=' + indiceGlobal + ']',
                     JSON.stringify(structGlobal)]);
                 structGlobal1 = structGlobal;
                 // @ts-ignore
                 for (_i = 0, structGlobal1_1 = structGlobal1; _i < structGlobal1_1.length; _i++) {
                     x = structGlobal1_1[_i];
                     this.conteudo += caller + ' -> ' + x.componente + ':' + x.metodo + '\r\n';
-                    this.helpers.loga(true, ['[SAIDA]', caller + ' -> ' + x.componente + ':' + x.metodo + '\r\n']);
+                    this.helpers.loga(this.debuga, ['[SAIDA]', caller + ' -> ' + x.componente + ':' + x.metodo + '\r\n']);
                     this.conteudo += 'activate ' + x.componente + ' ' + this.cores[indiceGlobal] + '\r\n';
-                    this.helpers.loga(true, ['[SAIDA]', 'activate ' + x.componente + ' ' + this.cores[indiceGlobal] + '\r\n']);
+                    this.helpers.loga(this.debuga, ['[SAIDA]', 'activate ' + x.componente + ' ' + this.cores[indiceGlobal] + '\r\n']);
                     this.validaChamadas(x, indiceGlobal);
                     this.conteudo += 'deactivate ' + x.componente + '\r\n';
-                    this.helpers.loga(true, ['[SAIDA]', 'deactivate ' + x.componente + '\r\n']);
+                    this.helpers.loga(this.debuga, ['[SAIDA]', 'deactivate ' + x.componente + '\r\n']);
                 } //)
                 return [2 /*return*/];
             });
@@ -110,14 +113,14 @@ var SalvaPUML = /** @class */ (function () {
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0:
-                                        this_1.helpers.loga(true, ['Filtro de metodo = ', x.metodo]);
+                                        this_1.helpers.loga(this_1.debuga, ['Filtro de metodo = ', x.metodo]);
                                         zz = ((_a = this_1.estrutura) === null || _a === void 0 ? void 0 : _a.findIndex(function (k) { return k.metodo === y.metodo; })) || 0;
-                                        this_1.helpers.loga(true, ['Indice = ', zz]);
+                                        this_1.helpers.loga(this_1.debuga, ['Indice = ', zz]);
                                         if (!(zz && zz >= 0)) return [3 /*break*/, 2];
                                         t = [];
                                         comp = this_1.estrutura[zz].componente;
                                         t.push(this_1.estrutura[zz]);
-                                        this_1.helpers.loga(true, ['Loop em  = ', t]);
+                                        this_1.helpers.loga(this_1.debuga, ['Loop em  = ', t]);
                                         indiceGlobal++;
                                         this_1.estrutura.splice(zz, 1);
                                         return [4 /*yield*/, this_1.loopSequencia(t, comp, indiceGlobal)];
@@ -126,7 +129,7 @@ var SalvaPUML = /** @class */ (function () {
                                         return [3 /*break*/, 3];
                                     case 2:
                                         this_1.conteudo += x.componente + ' -> ' + y.componente + ':' + y.metodo + '\r\n';
-                                        this_1.helpers.loga(true, ['[SemMetodo][SAIDA]', x.componente + ' -> ' + y.componente + ':' + y.metodo + '\r\n']);
+                                        this_1.helpers.loga(this_1.debuga, ['[SemMetodo][SAIDA]', x.componente + ' -> ' + y.componente + ':' + y.metodo + '\r\n']);
                                         _a.label = 3;
                                     case 3: return [2 /*return*/];
                                 }
@@ -152,7 +155,7 @@ var SalvaPUML = /** @class */ (function () {
     };
     SalvaPUML.prototype.salvaArquivo = function (tipoUML) {
         if (tipoUML === void 0) { tipoUML = tipouml_1.Tipouml.Sequencia; }
-        this.helpers.loga(true, ['conteudo=', this.conteudo]);
+        this.helpers.loga(this.debuga, ['conteudo=', this.conteudo]);
         var f = this.arquivo.diretorio + this.arquivo.arquivo + '.' + tipoUML + '.puml';
         fs.writeFile(f, this.conteudo, function (err) {
             if (err)
@@ -162,4 +165,4 @@ var SalvaPUML = /** @class */ (function () {
     };
     return SalvaPUML;
 }());
-exports["default"] = SalvaPUML;
+exports.default = SalvaPUML;

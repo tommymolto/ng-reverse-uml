@@ -1,4 +1,5 @@
 export enum Tipouml {
     Sequencia= 'sequence',
-    Atividade='activitys'
+    Atividade='activity',
+    AST='ast'
 }

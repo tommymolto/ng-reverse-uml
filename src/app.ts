@@ -51,9 +51,16 @@ export class Application {
             helpers.loga(this.debuga, ['Gerando PUML para ' + arquivo.diretorio + arquivo.arquivo]);
             const puml = new generateSequence(arquivo);
             helpers.loga(this.debuga, ['novaEstrutura=', JSON.stringify(puml.novaEstrutura)]);
-            const arqpuml = new SalvaPUML(arquivo, puml.headers, puml.methods, puml.novaEstrutura);
+            const arqpuml = new SalvaPUML(arquivo,
+                puml.headers,
+                puml.methods,
+                puml.novaEstrutura,
+                this.debuga,
+                puml.astSource);
             arqpuml.montaSequencia();
             arqpuml.salvaArquivo(Tipouml.Sequencia);
+            console.log('salva AST', puml.astSource);
+            arqpuml.salvaAST(Tipouml.AST);
 
         }
     }
